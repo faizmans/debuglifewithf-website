@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>debuglifewithf. | Engineering Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Apple Pro Variables --- */
+        :root {
+            --bg-pure-black: #000000;
+            --surface-dark: #111113;
+            --surface-lighter: #1d1d1f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --accent-glow: radial-gradient(circle at top, rgba(41, 151, 255, 0.12), transparent 50%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-pure-black);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            background-image: var(--accent-glow);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Subtle Noise Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- Dynamic Interactive Cursor Glow --- */
+        #cursor-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(41, 151, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: opacity 0.5s ease;
+            filter: blur(40px);
+            opacity: 0;
+            will-change: transform;
+        }
+
+        /* --- Typography --- */
+        .text-muted-pro { color: var(--text-secondary); line-height: 1.6; }
+        .tracking-tight { letter-spacing: -0.04em; }
+        .tracking-wide { letter-spacing: 0.05em; }
+        
+        /* --- Clay-Glass Navbar --- */
+        .navbar-pro {
+            background: rgba(25, 25, 28, 0.45) !important;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.5),                    
+                inset 2px 2px 5px rgba(255, 255, 255, 0.12),       
+                inset -3px -4px 10px rgba(0, 0, 0, 0.6);           
+            padding: 0.8rem 1rem;
+            max-width: 1200px; 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+            z-index: 9999;
+        }
+
+        .launch-badge {
+            background: rgba(117, 141, 230, 0.05);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 16px;
+            font-size: clamp(0.7rem, 2vw, 0.85rem);
+            white-space: nowrap;
+            box-shadow: 
+                inset 1px 1px 3px rgba(255, 255, 255, 0.1),
+                inset -1px -2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Hero Section & Parallax Wrapper --- */
+        .hero-section {
+            padding-top: 180px; 
+            padding-bottom: 100px;
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-parallax-wrapper {
+            will-change: transform, opacity;
+        }
+
+        .hero-headline {
+            font-size: clamp(3rem, 8vw, 7.5rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1.05;
+            background: linear-gradient(180deg, #ffffff 0%, #86868b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subheadline {
+            font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+            font-weight: 500;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- Buttons --- */
+        .btn-pro {
+            background: #f5f5f7;
+            color: #1d1d1f;
+            border-radius: 980px;
+            padding: 14px 32px;
+            font-weight: 600;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-pro:hover {
+            transform: scale(1.04);
+            background: #ffffff;
+            color: #000;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-pro-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .btn-pro-outline:hover {
+            background: var(--surface-lighter);
+            color: #fff;
+        }
+
+        /* --- Apple Bento Box Grid System --- */
+        .bento-card {
+            background: linear-gradient(145deg, var(--surface-dark) 0%, #0a0a0c 100%);
+            border-radius: 32px;
+            padding: 3rem;
+            height: 100%;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.04);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1);
+        }
+
+        /* --- Code Editor Design --- */
+        .mac-window {
+            background: #1e1e1e;
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            text-align: left;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        
+        .mac-header {
+            background: #2d2d2d;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #000;
+        }
+        
+        .mac-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+        
+        .code-block {
+            padding: 24px;
+            font-family: 'Fira Code', monospace;
+            color: #d4d4d4;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+            overflow-x: auto;
+        }
+        
+        .code-kw { color: #569cd6; } /* Keyword */
+        .code-func { color: #dcdcaa; } /* Function */
+        .code-str { color: #ce9178; } /* String */
+        .code-comment { color: #6a9955; font-style: italic; } /* Comment */
+
+        /* Forms */
+        .pro-input {
+            background: var(--surface-lighter) !important;
+            border: 1px solid var(--border-subtle) !important;
+            color: #ffffff !important;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            font-size: 16px !important; 
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
+        }
+
+        .pro-input:focus {
+            background: #222225 !important;
+            border-color: #2997ff !important;
+            box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2) !important;
+        }
+
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Icons */
+        .pro-icon {
+            width: 56px;
+            height: 56px;
+            color: #f5f5f7;
+            margin-bottom: 1.5rem;
+        }
+
+        .small-icon {
+            width: 32px;
+            height: 32px;
+            color: #2997ff;
+            background: rgba(41, 151, 255, 0.1);
+            padding: 6px;
+            border-radius: 8px;
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* --- Mobile Responsive Rules --- */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding-top: 130px;
+                padding-bottom: 60px;
+                min-height: auto;
+            }
+            .bento-card {
+                padding: 2rem;
+                border-radius: 24px;
+            }
+            .hero-headline { font-size: 3.2rem; }
+            .btn-pro { width: 100%; }
+            .d-flex.gap-3.flex-wrap { flex-direction: column; gap: 1rem !important; }
+            #cursor-glow { display: none; } /* Disable cursor glow on mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor-glow"></div>
+
+    <div class="fixed-top pt-3 px-3 px-md-4" style="z-index: 1030;">
+        <nav class="navbar navbar-pro mx-auto" id="main-nav">
+            <div class="container-fluid d-flex justify-content-between align-items-center px-2 px-md-3">
+                <a class="navbar-brand fw-bold tracking-tight text-white m-0" style="font-size: clamp(1.2rem, 4vw, 1.5rem);" href="#">debuglifewithf.</a>
+                <span class="badge rounded-pill fw-semibold launch-badge d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Launching Soon
+                </span>
+            </div>
+        </nav>
+    </div>
+
+    <section class="hero-section text-center">
+        <div class="container hero-parallax-wrapper fade-up visible">
+            <h1 class="hero-headline mb-4">Pro engineering.<br>Uncompromised.</h1>
+            <p class="hero-subheadline mb-5">
+                We build high-end Web Apps, Websites, Mobile Apps, SaaS, and MVPs. Clean architecture. Seamless user experiences. Built for scale.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#intake" class="btn-pro">Claim 1 of 5 Free Projects</a>
+                <a href="#about" class="btn-pro btn-pro-outline">Discover our process</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="about">
+        <div class="container py-4">
+            <div class="bento-card fade-up" style="transition-delay: 0.1s;">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-5 text-center text-lg-start">
+                        <h2 class="display-5 fw-bold tracking-tight mb-3">The Architects.</h2>
+                        <p class="text-muted-pro fs-5 mb-0">We are an elite collective of software engineers bridging the gap between high-end aesthetics and robust backend logic.</p>
+                    </div>
+                    <div class="col-lg-7">
+                        <p class="text-muted-pro mb-3 fs-5">At <strong>debuglifewithf.</strong>, we don't believe in templates. Every interface we design is meticulously crafted to solve complex business problems with elegant solutions.</p>
+                        <p class="text-muted-pro mb-0 fs-5">From our lab to your server, we treat your digital infrastructure with the precision of a fine instrument. Built to scale, built to convert, built to last.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="code-craft">
+        <div class="container py-4">
+            <div class="bento-card fade-up">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-5 order-2 order-lg-1">
+                        <h2 class="display-5 fw-bold tracking-tight mb-3">The Craft.</h2>
+                        <p class="text-muted-pro fs-5 mb-4">Behind every flawless interface is an equally flawless backend. We engineer scalable systems using modern stacks like Node.js, Python, and Django.</p>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 me-2 rounded-pill">Clean Code</span>
+                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 me-2 rounded-pill">Performant</span>
+                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 rounded-pill">Secure</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 order-1 order-lg-2">
+                        <div class="mac-window">
+                            <div class="mac-header">
+                                <div class="mac-dot dot-red"></div>
+                                <div class="mac-dot dot-yellow"></div>
+                                <div class="mac-dot dot-green"></div>
+                            </div>
+                            <pre class="code-block"><code><span class="code-comment">// Architecting digital excellence</span>
+<span class="code-kw">const</span> <span class="code-func">deployInfrastructure</span> = <span class="code-kw">async</span> (project) =&gt; {
+    <span class="code-kw">try</span> {
+        <span class="code-kw">const</span> architecture = <span class="code-kw">await</span> System.<span class="code-func">design</span>(project);
+        <span class="code-kw">const</span> backend = <span class="code-kw">new</span> <span class="code-func">NodeServer</span>({ 
+            scale: <span class="code-str">'infinite'</span>, 
+            security: <span class="code-str">'enterprise'</span> 
+        });
+        
+        <span class="code-kw">return</span> backend.<span class="code-func">launch</span>(architecture);
+    } <span class="code-kw">catch</span> (error) {
+        <span class="code-func">debugLife</span>(error);
+    }
+};</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="services">
+        <div class="container py-4 text-center">
+            <h2 class="display-4 fw-bold tracking-tight mb-5 fade-up">Core Capabilities.</h2>
+            <div class="row g-4 text-start">
+                
+                <div class="col-lg-4 col-md-6 fade-up" style="transition-delay: 0.1s;">
+                    <div class="bento-card d-flex flex-column">
+                        <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4">SaaS & MVPs</h3>
+                        <p class="text-muted-pro mb-0">Rapid, structured development of scalable minimum viable products to get your startup to market efficiently.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 fade-up" style="transition-delay: 0.2s;">
+                    <div class="bento-card d-flex flex-column">
+                        <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4">Web Apps</h3>
+                        <p class="text-muted-pro mb-0">Complex, dynamic frontend and robust backend systems built with absolute precision and maintainable architecture.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 fade-up" style="transition-delay: 0.3s;">
+                    <div class="bento-card d-flex flex-column">
+                        <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4">Mobile & Web</h3>
+                        <p class="text-muted-pro mb-0">High-conversion, stunning landing pages and native-feeling mobile applications designed for peak performance.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="process">
+        <div class="container py-4">
+            <div class="text-center mb-5 fade-up">
+                <h2 class="display-4 fw-bold tracking-tight mb-3">The Engineering Process.</h2>
+                <p class="text-muted-pro mx-auto fs-5" style="max-width: 650px;">We don't just write code. We architect solutions. Here is exactly what happens after you initialize a project with our studio.</p>
+            </div>
+            
+            <div class="row g-4">
+                
+                <div class="col-lg-4 fade-up">
+                    <div class="bento-card d-flex flex-column position-relative h-100">
+                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">01</div>
+                        <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Discovery & Scoping</h3>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Mapping the architecture. We define the exact database schemas, user flows, and modern tech stack required to scale your vision properly from day one.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 fade-up delay-1">
+                    <div class="bento-card d-flex flex-column position-relative h-100">
+                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">02</div>
+                        <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Sprint Development</h3>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Writing clean, scalable code. We build your application in structured agile sprints, providing you with transparent, routine progress updates and staging links.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 fade-up delay-2">
+                    <div class="bento-card d-flex flex-column position-relative h-100">
+                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">03</div>
+                        <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Deployment & Scaling</h3>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Launching the finalized product. We deploy your software to high-performance cloud servers, fully optimized for enterprise security, speed, and global traffic.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="business-tech">
+        <div class="container py-4">
+            <div class="bento-card fade-up">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-5 text-center text-lg-start">
+                        <h2 class="display-5 fw-bold tracking-tight mb-3">A Business Multiplier.</h2>
+                        <p class="text-muted-pro fs-5 mb-0">We do not just deploy code; we deploy operational leverage. Modern businesses fail when their tech stack slows them down.</p>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="d-flex align-items-start mb-4">
+                            <svg class="small-icon me-3 me-md-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <div>
+                                <h4 class="fw-bold fs-5 mb-1">Workflow Automation</h4>
+                                <p class="text-muted-pro mb-0 small">Replace manual tasks with automated digital systems, saving administrative hours.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-4">
+                            <svg class="small-icon me-3 me-md-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                            <div>
+                                <h4 class="fw-bold fs-5 mb-1">Infinite Scalability</h4>
+                                <p class="text-muted-pro mb-0 small">Cloud-native architectures that grow seamlessly alongside your user base.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <svg class="small-icon me-3 me-md-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            <div>
+                                <h4 class="fw-bold fs-5 mb-1">Enterprise Security</h4>
+                                <p class="text-muted-pro mb-0 small">Modern authentication and encrypted databases implemented as a standard.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="marketing">
+        <div class="container py-4 text-center fade-up">
+            <h2 class="display-4 fw-bold tracking-tight mb-4">Engineered for Dominance.</h2>
+            <p class="text-muted-pro mx-auto fs-5 mb-5" style="max-width: 700px;">A beautiful app is useless if nobody finds it. We integrate aggressive digital marketing strategies directly into our development lifecycle.</p>
+            
+            <div class="row g-4 text-start">
+                <div class="col-lg-4 col-md-6">
+                    <div class="bento-card p-4 p-md-5">
+                        <h4 class="fw-bold fs-5 mb-2">SEO-First Build</h4>
+                        <p class="text-muted-pro small mb-0">Utilizing Server-Side Rendering (SSR) for maximum Google visibility.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="bento-card p-4 p-md-5">
+                        <h4 class="fw-bold fs-5 mb-2">Conversion UI/UX</h4>
+                        <p class="text-muted-pro small mb-0">Frictionless flows designed using psychology to turn scrollers into clients.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="bento-card p-4 p-md-5">
+                        <h4 class="fw-bold fs-5 mb-2">Data Analytics</h4>
+                        <p class="text-muted-pro small mb-0">Advanced tracking integrated to give visibility over marketing ROI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 mb-5" id="intake">
+        <div class="container py-4 fade-up">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="bento-card">
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bold tracking-tight">Initialize.</h2>
+                            <p class="text-muted-pro">Submit specifications for the launch cohort.</p>
+                        </div>
+                        
+                        <form id="projectForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label text-uppercase tracking-wide">Name / Company</label>
+                                    <input type="text" name="name" class="pro-input form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-uppercase tracking-wide">Email Address</label>
+                                    <input type="email" name="email" class="pro-input form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-uppercase tracking-wide">Architecture</label>
+                                    <select name="project_type" class="pro-input form-select">
+                                        <option value="saas">SaaS Platform</option>
+                                        <option value="mvp">MVP Development</option>
+                                        <option value="webapp">Web Application</option>
+                                        <option value="mobile">Mobile Application</option>
+                                        <option value="website">Corporate Website</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-uppercase tracking-wide">Specifications</label>
+                                    <textarea name="message" class="pro-input form-control" rows="5" placeholder="Detail the core features and objectives..." required></textarea>
+                                </div>
+                                <div class="col-12 mt-4 mt-md-5 text-center">
+                                    <button type="submit" id="submitBtn" class="btn-pro w-100">Submit Request</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="successMessage" class="d-none text-center py-5">
+                            <svg class="mb-4 mx-auto" style="width: 64px; color: #2ecc71;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <h3 class="fw-bold mb-2">Transmission Received</h3>
+                            <p class="text-muted-pro mb-0">Our engineering team will initiate contact shortly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 py-md-5 text-center" style="border-top: 1px solid var(--border-subtle);">
+        <p class="text-muted-pro small mb-0 tracking-wide text-uppercase">© 2026 debuglifewithf. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 1. Dynamic Cursor Glow
+        const cursorGlow = document.getElementById('cursor-glow');
+        let isMouseMoving = false;
+
+        document.addEventListener('mousemove', (e) => {
+            isMouseMoving = true;
+            cursorGlow.style.opacity = '1';
+            requestAnimationFrame(() => {
+                cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+        });
+
+        // 2. Hardware-Accelerated Hero Parallax
+        const heroWrapper = document.querySelector('.hero-parallax-wrapper');
+        const navBar = document.getElementById('main-nav');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            
+            // Fade and translate hero text down as you scroll
+            if (scrollY < 800) {
+                heroWrapper.style.transform = `translateY(${scrollY * 0.35}px)`;
+                heroWrapper.style.opacity = 1 - (scrollY / 500);
+            }
+
+            // Shrink navbar slightly on scroll for polish
+            if (scrollY > 50) {
+                navBar.style.padding = '0.4rem 1rem';
+                navBar.style.background = 'rgba(25, 25, 28, 0.65) !important';
+            } else {
+                navBar.style.padding = '0.8rem 1rem';
+            }
+        });
+
+        // 3. Staggered Scroll Reveal (Intersection Observer)
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        });
+
+        // 4. Smooth Form Submission via Google Apps Script
+        document.getElementById('projectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMessage');
+            
+            // Connected directly to your Google Script URL
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycbyrVffsH87yyXdnUgJksbtp3bj-gWmdAHVUf_jkL6eftmToYcE50h7dCfw06kgHW2609g/exec';
+            
+            submitBtn.innerText = "Transmitting...";
+            submitBtn.style.opacity = "0.7";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(googleScriptURL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' // Bypasses Google's strict CORS policy
+            })
+            .then(() => {
+                // Trigger the Apple-style success animation
+                form.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                form.style.opacity = '0';
+                form.style.transform = 'scale(0.98)';
+                
+                setTimeout(() => {
+                    form.classList.add('d-none');
+                    successMsg.classList.remove('d-none');
+                    
+                    successMsg.style.opacity = '0';
+                    successMsg.style.transform = 'translateY(20px)';
+                    
+                    void successMsg.offsetWidth; // Reflow
+                    
+                    successMsg.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    successMsg.style.opacity = '1';
+                    successMsg.style.transform = 'translateY(0)';
+                }, 400);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                submitBtn.innerText = "Submit Request";
+                submitBtn.style.opacity = "1";
+                submitBtn.disabled = false;
+                alert("Transmission failed. Please check your connection.");
+            });
+        });
+    </script>
+</body>
+</html>
