@@ -4,171 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>debuglifewithf. | Engineering Studio</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter & Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Devicon -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
     
     <style>
-        /* --- Apple Pro Variables --- */
+        /* --- Modern Skeuomorphic Variables (Dark Anodized Aluminum) --- */
         :root {
-            --bg-pure-black: #000000;
-            --surface-dark: #111113;
-            --surface-lighter: #1d1d1f;
-            --text-primary: #f5f5f7;
-            --text-secondary: #86868b;
-            --border-subtle: rgba(255, 255, 255, 0.08);
-            --accent-glow: radial-gradient(circle at top, rgba(41, 151, 255, 0.12), transparent 50%);
+            --bg-metal: #1a1c23; 
+            --shadow-dark: #121318;
+            --shadow-light: #22252e;
+            --text-primary: #f0f0f5;
+            --text-secondary: #8b92a5;
+            --text-inset: #5c6275;
+            --led-blue: #007aff;
+            --led-glow: rgba(0, 122, 255, 0.4);
+            --led-success: #34c759;
+            --led-warning: #ffcc00;
+            --led-danger: #ff3b30;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-pure-black);
+            background-color: var(--bg-metal);
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            background-image: var(--accent-glow);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
         }
 
-        /* Subtle Noise Overlay */
+        /* Physical Brushed Metal Texture */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 9998;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
         }
 
-        /* --- Dynamic Interactive Cursor Glow --- */
+        /* --- Dynamic Flashlight Cursor --- */
         #cursor-glow {
             position: fixed;
             top: 0; left: 0;
-            width: 40vw; height: 40vw;
-            background: radial-gradient(circle, rgba(41, 151, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
             border-radius: 50%;
             pointer-events: none;
-            transform: translate(-50%, -50%);
             z-index: 0;
-            transition: opacity 0.5s ease;
-            filter: blur(40px);
+            transition: opacity 0.3s ease;
             opacity: 0;
             will-change: transform;
+            mix-blend-mode: screen;
         }
 
-        /* --- Typography --- */
-        .text-muted-pro { color: var(--text-secondary); line-height: 1.6; }
+        /* Typography Enhancements */
+        .text-muted-pro { color: var(--text-secondary); line-height: 1.7; }
         .tracking-tight { letter-spacing: -0.04em; }
-        .tracking-wide { letter-spacing: 0.05em; }
         
-        /* --- Clay-Glass Navbar --- */
+        /* --- Skeuomorphic Floating Navbar --- */
         .navbar-pro {
-            background: rgba(25, 25, 28, 0.45) !important;
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: linear-gradient(145deg, #1c1e25, #17181e) !important;
             border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.5),                    
-                inset 2px 2px 5px rgba(255, 255, 255, 0.12),       
-                inset -3px -4px 10px rgba(0, 0, 0, 0.6);           
+                8px 8px 16px var(--shadow-dark), 
+                -8px -8px 16px var(--shadow-light),
+                inset 1px 1px 2px rgba(255,255,255,0.05);
             padding: 0.8rem 1rem;
             max-width: 1200px; 
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 9999;
+            border: 1px solid rgba(0,0,0,0.2);
         }
 
         .launch-badge {
-            background: rgba(117, 141, 230, 0.05);
-            color: #f5f5f7;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 8px 16px;
+            background: #111216;
+            color: var(--led-blue);
+            padding: 8px 18px;
             font-size: clamp(0.7rem, 2vw, 0.85rem);
             white-space: nowrap;
             box-shadow: 
-                inset 1px 1px 3px rgba(255, 255, 255, 0.1),
-                inset -1px -2px 4px rgba(0, 0, 0, 0.4);
+                inset 3px 3px 6px var(--shadow-dark), 
+                inset -3px -3px 6px var(--shadow-light);
+            border: 1px solid #000;
+            text-shadow: 0 0 8px var(--led-glow);
         }
 
-        /* --- Hero Section & Parallax Wrapper --- */
+        /* --- Hero Section with Live Widget --- */
         .hero-section {
-            padding-top: 180px; 
-            padding-bottom: 100px;
+            padding-top: 160px; 
+            padding-bottom: 80px;
             min-height: 95vh;
             display: flex;
             align-items: center;
             position: relative;
             z-index: 1;
+            perspective: 1000px; 
         }
 
         .hero-parallax-wrapper {
             will-change: transform, opacity;
+            width: 100%;
         }
 
         .hero-headline {
-            font-size: clamp(3rem, 8vw, 7.5rem);
-            font-weight: 700;
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 800;
             letter-spacing: -0.05em;
             line-height: 1.05;
-            background: linear-gradient(180deg, #ffffff 0%, #86868b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #e5e5eb;
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.5),
+                -1px -1px 2px rgba(255,255,255,0.1);
+            word-wrap: break-word;
         }
 
         .hero-subheadline {
-            font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+            font-size: clamp(1rem, 2vw, 1.25rem);
             font-weight: 500;
             color: var(--text-secondary);
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 600px;
         }
 
-        /* --- Buttons --- */
+        /* Live Hardware Widget */
+        .hardware-casing {
+            background: linear-gradient(145deg, #1c1e25, #17181e);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 
+                15px 15px 30px var(--shadow-dark), 
+                -15px -15px 30px var(--shadow-light),
+                inset 1px 1px 2px rgba(255,255,255,0.05);
+            border: 1px solid rgba(0,0,0,0.4);
+            position: relative;
+            transform: rotateY(-5deg) rotateX(5deg);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .hardware-casing:hover {
+            transform: rotateY(0deg) rotateX(0deg);
+        }
+
+        .hardware-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--text-inset);
+            text-shadow: -1px -1px 1px #000;
+        }
+
+        .hardware-screen {
+            background: #0d0e12;
+            border-radius: 12px;
+            padding: 24px;
+            height: 220px;
+            box-shadow: 
+                inset 8px 8px 16px rgba(0,0,0,0.9), 
+                inset -4px -4px 10px rgba(255,255,255,0.03);
+            border: 1px solid #000;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .scanner-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(41, 151, 255, 0.6);
+            box-shadow: 0 0 15px rgba(41, 151, 255, 1);
+            animation: scan 3s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        .terminal-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--led-success);
+            text-shadow: 0 0 5px rgba(52, 199, 89, 0.4);
+            line-height: 1.5;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px; height: 15px;
+            background-color: var(--led-success);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .eq-visualizer {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+            height: 40px;
+            opacity: 0.8;
+        }
+
+        .eq-bar {
+            flex: 1;
+            background: var(--led-blue);
+            box-shadow: 0 0 8px var(--led-glow);
+            border-radius: 2px 2px 0 0;
+            transform-origin: bottom;
+        }
+
+        /* Unique animations for the physical processor bars */
+        .eq-bar:nth-child(1) { animation: eqAnim 1.2s infinite alternate ease-in-out; }
+        .eq-bar:nth-child(2) { animation: eqAnim 0.8s infinite alternate ease-in-out 0.2s; }
+        .eq-bar:nth-child(3) { animation: eqAnim 1.5s infinite alternate ease-in-out 0.4s; }
+        .eq-bar:nth-child(4) { animation: eqAnim 1.1s infinite alternate ease-in-out 0.1s; }
+        .eq-bar:nth-child(5) { animation: eqAnim 0.9s infinite alternate ease-in-out 0.5s; }
+        .eq-bar:nth-child(6) { animation: eqAnim 1.4s infinite alternate ease-in-out 0.3s; }
+        .eq-bar:nth-child(7) { animation: eqAnim 1.0s infinite alternate ease-in-out 0.6s; }
+
+        @keyframes eqAnim {
+            0% { height: 10%; }
+            100% { height: 100%; }
+        }
+
+        .status-leds {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .led-phys {
+            width: 10px; height: 10px; border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.4);
+            border: 1px solid #000;
+        }
+
+        .led-blink-green { background: var(--led-success); box-shadow: 0 0 8px var(--led-success); animation: pulseLed 2s infinite; }
+        .led-steady-blue { background: var(--led-blue); box-shadow: 0 0 8px var(--led-blue); }
+        .led-flicker-red { background: var(--led-danger); box-shadow: 0 0 8px var(--led-danger); animation: flicker 0.5s infinite; }
+
+        @keyframes pulseLed { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
+
+        /* --- Physical Tactile Buttons --- */
         .btn-pro {
-            background: #f5f5f7;
-            color: #1d1d1f;
-            border-radius: 980px;
-            padding: 14px 32px;
-            font-weight: 600;
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            color: #000000;
+            border-radius: 999px;
+            padding: 16px 36px;
+            font-weight: 700;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            box-shadow: 
+                6px 6px 12px var(--shadow-dark), 
+                -6px -6px 12px var(--shadow-light),
+                inset 2px 2px 4px rgba(255,255,255,0.8);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: none;
+            border: 1px solid #d1d1d1;
             white-space: nowrap;
         }
 
         .btn-pro:hover {
-            transform: scale(1.04);
-            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 
+                8px 8px 16px var(--shadow-dark), 
+                -8px -8px 16px var(--shadow-light),
+                inset 2px 2px 4px rgba(255,255,255,0.9);
             color: #000;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-pro:active {
+            transform: translateY(2px);
+            box-shadow: 
+                2px 2px 4px var(--shadow-dark), 
+                -2px -2px 4px var(--shadow-light),
+                inset 4px 4px 8px rgba(0,0,0,0.1);
         }
 
         .btn-pro-outline {
-            background: transparent;
+            background: linear-gradient(145deg, #1c1e25, #17181e);
             color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid #000;
         }
         
         .btn-pro-outline:hover {
-            background: var(--surface-lighter);
-            color: #fff;
+            background: var(--bg-metal);
+            color: var(--led-blue);
         }
 
-        /* --- Apple Bento Box Grid System --- */
+        /* --- Extruded Physical Bento Cards --- */
         .bento-card {
-            background: linear-gradient(145deg, var(--surface-dark) 0%, #0a0a0c 100%);
-            border-radius: 32px;
+            background: linear-gradient(145deg, #1c1e25, #17181e);
+            border-radius: 28px;
             padding: 3rem;
             height: 100%;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.04);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, box-shadow 0.5s ease;
+            border: 1px solid rgba(0,0,0,0.4);
+            box-shadow: 
+                12px 12px 24px var(--shadow-dark), 
+                -12px -12px 24px var(--shadow-light),
+                inset 1px 1px 2px rgba(255,255,255,0.04);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -176,30 +329,109 @@
 
         .bento-card:hover {
             transform: translateY(-8px) scale(1.01);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.1);
+            box-shadow: 
+                20px 20px 40px var(--shadow-dark), 
+                -12px -12px 24px var(--shadow-light),
+                inset 1px 1px 2px rgba(255,255,255,0.06);
         }
 
-        /* --- Code Editor Design --- */
+        .skeuo-number {
+            position: absolute;
+            top: -10px; right: 10px;
+            font-size: 7rem;
+            font-weight: 800;
+            color: transparent;
+            text-shadow: 
+                1px 1px 2px rgba(255,255,255,0.03),
+                -1px -1px 2px rgba(0,0,0,0.3);
+            user-select: none;
+            z-index: 0;
+        }
+
+        /* --- Inset Tech Marquee Groove --- */
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            padding: 2.5rem 0;
+            background: #15161b;
+            box-shadow: 
+                inset 5px 5px 15px var(--shadow-dark), 
+                inset -5px -5px 15px var(--shadow-light);
+            margin: 3rem 0;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 4rem;
+            animation: marquee-scroll 50s linear infinite;
+        }
+
+        .marquee-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 4rem;
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .marquee-item {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-inset);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            filter: grayscale(100%) drop-shadow(1px 1px 1px #000);
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .marquee-item i { font-size: 1.8rem; }
+
+        .marquee-item:hover {
+            filter: grayscale(0%);
+            color: var(--text-primary);
+            transform: scale(1.1) translateY(-2px);
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100% - 4rem)); } 
+        }
+
+        /* --- Realistic Mac Terminal --- */
         .mac-window {
-            background: #1e1e1e;
-            border-radius: 16px;
-            border: 1px solid var(--border-subtle);
+            background: #0a0b0e;
+            border-radius: 12px;
+            border: 1px solid #000;
+            box-shadow: 
+                15px 15px 30px rgba(0,0,0,0.6), 
+                inset 1px 1px 1px rgba(255,255,255,0.05);
             overflow: hidden;
             text-align: left;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
         
         .mac-header {
-            background: #2d2d2d;
+            background: linear-gradient(180deg, #2a2c35 0%, #1a1c23 100%);
             padding: 12px 16px;
             display: flex;
             gap: 8px;
             border-bottom: 1px solid #000;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
         }
         
         .mac-dot {
             width: 12px; height: 12px; border-radius: 50%;
+            box-shadow: inset -1px -2px 4px rgba(0,0,0,0.5), inset 1px 2px 4px rgba(255,255,255,0.4);
+            border: 1px solid rgba(0,0,0,0.5);
         }
         .dot-red { background: #ff5f56; }
         .dot-yellow { background: #ffbd2e; }
@@ -208,98 +440,209 @@
         .code-block {
             padding: 24px;
             font-family: 'Fira Code', monospace;
-            color: #d4d4d4;
-            font-size: 0.9rem;
+            color: #a1a1aa;
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
             line-height: 1.6;
             margin: 0;
             overflow-x: auto;
+            box-shadow: inset 10px 10px 20px rgba(0,0,0,0.8);
         }
         
-        .code-kw { color: #569cd6; } /* Keyword */
-        .code-func { color: #dcdcaa; } /* Function */
-        .code-str { color: #ce9178; } /* String */
-        .code-comment { color: #6a9955; font-style: italic; } /* Comment */
+        .code-kw { color: #569cd6; text-shadow: 0 0 4px rgba(86,156,214,0.4); } 
+        .code-func { color: #dcdcaa; } 
+        .code-str { color: #ce9178; } 
+        .code-comment { color: #6a9955; font-style: italic; }
 
-        /* Forms */
+        /* --- Deep Inset Form Inputs --- */
         .pro-input {
-            background: var(--surface-lighter) !important;
-            border: 1px solid var(--border-subtle) !important;
+            background: #15161b !important;
+            border: 1px solid #000 !important;
             color: #ffffff !important;
-            border-radius: 14px;
-            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            padding: 1.2rem 1.2rem;
             font-size: 16px !important; 
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark), 
+                inset -4px -4px 8px var(--shadow-light) !important;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
         }
 
         .pro-input:focus {
-            background: #222225 !important;
-            border-color: #2997ff !important;
-            box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2) !important;
+            background: #111216 !important;
+            border-color: var(--led-blue) !important;
+            box-shadow: 
+                inset 6px 6px 12px rgba(0,0,0,0.8), 
+                0 0 12px var(--led-glow) !important;
+            outline: none;
         }
 
         .form-label {
             color: var(--text-secondary);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.8rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 1px 1px 1px #000;
         }
 
         /* Icons */
         .pro-icon {
             width: 56px;
             height: 56px;
-            color: #f5f5f7;
+            color: var(--text-primary);
             margin-bottom: 1.5rem;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
         }
 
         .small-icon {
             width: 32px;
             height: 32px;
-            color: #2997ff;
-            background: rgba(41, 151, 255, 0.1);
+            color: var(--led-blue);
+            background: #111216;
             padding: 6px;
             border-radius: 8px;
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            border: 1px solid #000;
         }
 
-        /* --- Scroll Reveal Animations --- */
-        .fade-up {
+        /* --- 3D Scroll Reveal Animations --- */
+        section { perspective: 1500px; }
+
+        .skeuo-reveal {
             opacity: 0;
-            transform: translateY(40px) scale(0.98);
+            transform: translateY(60px) rotateX(15deg) scale(0.95);
+            transform-origin: bottom center;
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .fade-up.visible {
+        .skeuo-reveal.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0) rotateX(0deg) scale(1);
         }
 
-        /* --- Mobile Responsive Rules --- */
-        @media (max-width: 768px) {
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+
+        /* --- Global Mobile Responsiveness --- */
+        @media (max-width: 991px) {
             .hero-section {
-                padding-top: 130px;
+                padding-top: 140px;
                 padding-bottom: 60px;
                 min-height: auto;
             }
-            .bento-card {
-                padding: 2rem;
-                border-radius: 24px;
+            .hero-headline {
+                font-size: 3rem;
             }
-            .hero-headline { font-size: 3.2rem; }
+            .hardware-casing {
+                transform: none; /* Disable 3D tilt on mobile */
+                margin-top: 2rem;
+            }
+            .bento-card {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+                box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+            }
             .btn-pro { width: 100%; }
-            .d-flex.gap-3.flex-wrap { flex-direction: column; gap: 1rem !important; }
-            #cursor-glow { display: none; } /* Disable cursor glow on mobile */
+            .d-flex.gap-3.flex-wrap { flex-direction: column; gap: 16px !important; }
+            #cursor-glow { display: none; }
+            .display-4 { font-size: 2.2rem; }
+            .display-5 { font-size: 2rem; }
+            .pro-icon { width: 44px; height: 44px; margin-bottom: 1.2rem; }
+            section { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+            .marquee-wrapper { padding: 1.5rem 0; margin: 1rem 0;}
+            .marquee-item { font-size: 1rem; }
+            .marquee-item i { font-size: 1.5rem; }
+            
+            .skeuo-reveal { transform: translateY(40px) scale(0.98); }
+            .skeuo-reveal.visible { transform: translateY(0) scale(1); }
+        }
+        /* --- Quantum Footer --- */
+        .quantum-footer {
+            background: #050608; /* Deepest space black for the bottom edge */
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 5rem 0 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer-glow {
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80%; height: 150px;
+            background: radial-gradient(ellipse at bottom, rgba(41, 151, 255, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        .footer-heading {
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: var(--led-blue);
+            transform: translateX(4px);
+        }
+
+        .footer-manifesto {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .system-status-footer {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #0a0b10;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);}
+            /* Pulsing Text Glow */
+        .system-status-text {
+            color: var(--led-success);
+            font-weight: 600;
+            animation: pulseText 2s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { 
+                text-shadow: 0 0 4px rgba(52, 199, 89, 0.4); 
+                opacity: 0.85; 
+            }
+            50% { 
+                text-shadow: 0 0 12px rgba(52, 199, 89, 0.9); 
+                opacity: 1; 
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Ambient Cursor Glow -->
     <div id="cursor-glow"></div>
 
+    <!-- Floating Raised Navbar -->
     <div class="fixed-top pt-3 px-3 px-md-4" style="z-index: 1030;">
         <nav class="navbar navbar-pro mx-auto" id="main-nav">
             <div class="container-fluid d-flex justify-content-between align-items-center px-2 px-md-3">
-                <a class="navbar-brand fw-bold tracking-tight text-white m-0" style="font-size: clamp(1.2rem, 4vw, 1.5rem);" href="#">debuglifewithf.</a>
+                <a class="navbar-brand fw-bold tracking-tight text-white m-0" style="font-size: clamp(1.2rem, 4vw, 1.4rem);" href="#">debuglifewithf.</a>
                 <span class="badge rounded-pill fw-semibold launch-badge d-flex align-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -311,48 +654,132 @@
         </nav>
     </div>
 
-    <section class="hero-section text-center">
-        <div class="container hero-parallax-wrapper fade-up visible">
-            <h1 class="hero-headline mb-4">Pro engineering.<br>Uncompromised.</h1>
-            <p class="hero-subheadline mb-5">
-                We build high-end Web Apps, Websites, Mobile Apps, SaaS, and MVPs. Clean architecture. Seamless user experiences. Built for scale.
-            </p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#intake" class="btn-pro">Claim 1 of 5 Free websites
-                </a>
-                <a href="#about" class="btn-pro btn-pro-outline">Discover our process</a>
+    <!-- High-End Skeuomorphic Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-parallax-wrapper skeuo-reveal visible">
+            <div class="row align-items-center g-5">
+                
+                <!-- Left: Headline Content -->
+                <div class="col-lg-6 text-center text-lg-start">
+                    <!-- Physical Online Indicator -->
+                    <div class="d-inline-flex align-items-center mb-4 px-3 py-1 rounded-pill" style="background: #111216; border: 1px solid #000; box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);">
+                        <div class="led-phys led-blink-green me-2"></div>
+                        <span class="small font-monospace" style="color: var(--led-success); letter-spacing: 1px;">SYSTEM.ONLINE</span>
+                    </div>
+                    
+                    <h1 class="hero-headline mb-4">Pro engineering.<br>Uncompromised.</h1>
+                    <p class="hero-subheadline mb-5 mx-auto mx-lg-0">
+                        We build high-end Web Apps, Websites, Mobile Apps, SaaS, and MVPs. Clean architecture. Seamless user experiences. Built for scale.
+                    </p>
+                    <div class="d-flex justify-content-center justify-content-lg-start gap-3 flex-wrap">
+                        <a href="#about" class="btn-pro btn-pro-outline">Discover our process</a>
+                    </div>
+                </div>
+
+                <!-- Right: Live Animated Hardware Widget -->
+                <div class="col-lg-6">
+                    <div class="hardware-casing skeuo-reveal delay-1 visible">
+                        <div class="hardware-top-bar">
+                            <span>DEBUGLIFEWITHF // CORE_V1.0</span>
+                            <div class="status-leds">
+                                <div class="led-phys led-steady-blue"></div>
+                                <div class="led-phys led-flicker-red"></div>
+                            </div>
+                        </div>
+                        <div class="hardware-screen">
+                            <div class="scanner-line"></div>
+                            
+                            <!-- Live Typing Terminal -->
+                            <div class="terminal-text">
+                                <span id="typewriter"></span><span class="terminal-cursor"></span>
+                            </div>
+                            
+                            <!-- Live Processing Equalizer -->
+                            <div class="eq-visualizer">
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
+    <!-- Who We Are / Philosophy -->
     <section class="py-5" id="about">
         <div class="container py-4">
-            <div class="bento-card fade-up" style="transition-delay: 0.1s;">
+            <div class="bento-card skeuo-reveal">
                 <div class="row align-items-center g-4 g-lg-5">
                     <div class="col-lg-5 text-center text-lg-start">
                         <h2 class="display-5 fw-bold tracking-tight mb-3">The Architects.</h2>
-                        <p class="text-muted-pro fs-5 mb-0">We are an elite collective of software engineers bridging the gap between high-end aesthetics and robust backend logic.</p>
+                        <p class="text-muted-pro fs-5 mb-0">We are an elite collective of software engineers bridging the gap between high-end physical aesthetics and robust backend logic.</p>
                     </div>
                     <div class="col-lg-7">
                         <p class="text-muted-pro mb-3 fs-5">At <strong>debuglifewithf.</strong>, we don't believe in templates. Every interface we design is meticulously crafted to solve complex business problems with elegant solutions.</p>
-                        <p class="text-muted-pro mb-0 fs-5">From our lab to your server, we treat your digital infrastructure with the precision of a fine instrument. Built to scale, built to convert, built to last.</p>
+                        <p class="text-muted-pro mb-0 fs-5">From our lab to your server, we treat your digital infrastructure with the precision of a fine physical instrument. Built to scale, built to convert, built to last.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Inset Interactive Tech Marquee -->
+    <div class="marquee-wrapper skeuo-reveal">
+        <div class="marquee-track">
+            <div class="marquee-group">
+                <span class="marquee-item"><i class="devicon-nodejs-plain colored"></i> Node.js</span>
+                <span class="marquee-item"><i class="devicon-python-plain colored"></i> Python</span>
+                <span class="marquee-item"><i class="devicon-django-plain colored"></i> Django</span>
+                <span class="marquee-item"><i class="devicon-react-original colored"></i> React</span>
+                <span class="marquee-item"><i class="devicon-nextjs-plain"></i> Next.js</span>
+                <span class="marquee-item"><i class="devicon-typescript-plain colored"></i> TypeScript</span>
+                <span class="marquee-item"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</span>
+                <span class="marquee-item"><i class="devicon-docker-plain colored"></i> Docker</span>
+                <span class="marquee-item"><i class="devicon-mongodb-plain colored"></i> MongoDB</span>
+                <span class="marquee-item"><i class="devicon-tailwindcss-original colored"></i> Tailwind</span>
+                <span class="marquee-item"><i class="devicon-graphql-plain colored"></i> GraphQL</span>
+                <span class="marquee-item"><i class="devicon-amazonwebservices-plain-wordmark colored"></i> AWS</span>
+            </div>
+            <div class="marquee-group" aria-hidden="true">
+                <span class="marquee-item"><i class="devicon-nodejs-plain colored"></i> Node.js</span>
+                <span class="marquee-item"><i class="devicon-python-plain colored"></i> Python</span>
+                <span class="marquee-item"><i class="devicon-django-plain colored"></i> Django</span>
+                <span class="marquee-item"><i class="devicon-react-original colored"></i> React</span>
+                <span class="marquee-item"><i class="devicon-nextjs-plain"></i> Next.js</span>
+                <span class="marquee-item"><i class="devicon-typescript-plain colored"></i> TypeScript</span>
+                <span class="marquee-item"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</span>
+                <span class="marquee-item"><i class="devicon-docker-plain colored"></i> Docker</span>
+                <span class="marquee-item"><i class="devicon-mongodb-plain colored"></i> MongoDB</span>
+                <span class="marquee-item"><i class="devicon-tailwindcss-original colored"></i> Tailwind</span>
+                <span class="marquee-item"><i class="devicon-graphql-plain colored"></i> GraphQL</span>
+                <span class="marquee-item"><i class="devicon-amazonwebservices-plain-wordmark colored"></i> AWS</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Code Block Showcase -->
     <section class="py-5" id="code-craft">
         <div class="container py-4">
-            <div class="bento-card fade-up">
+            <div class="bento-card skeuo-reveal">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-5 order-2 order-lg-1">
                         <h2 class="display-5 fw-bold tracking-tight mb-3">The Craft.</h2>
                         <p class="text-muted-pro fs-5 mb-4">Behind every flawless interface is an equally flawless backend. We engineer scalable systems using modern stacks like Node.js, Python, and Django.</p>
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 me-2 rounded-pill">Clean Code</span>
-                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 me-2 rounded-pill">Performant</span>
-                            <span class="badge bg-dark border border-secondary text-light px-3 py-2 rounded-pill">Secure</span>
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <span class="badge bg-dark px-3 py-2 rounded-pill">Clean Code</span>
+                            <span class="badge bg-dark px-3 py-2 rounded-pill">Performant</span>
+                            <span class="badge bg-dark px-3 py-2 rounded-pill">Secure</span>
                         </div>
                     </div>
                     <div class="col-lg-7 order-1 order-lg-2">
@@ -383,12 +810,13 @@
         </div>
     </section>
 
+    <!-- Services (Bento Grid) -->
     <section class="py-5" id="services">
         <div class="container py-4 text-center">
-            <h2 class="display-4 fw-bold tracking-tight mb-5 fade-up">Core Capabilities.</h2>
+            <h2 class="display-4 fw-bold tracking-tight mb-5 skeuo-reveal">Core Capabilities.</h2>
             <div class="row g-4 text-start">
                 
-                <div class="col-lg-4 col-md-6 fade-up" style="transition-delay: 0.1s;">
+                <div class="col-lg-4 col-md-6 skeuo-reveal">
                     <div class="bento-card d-flex flex-column">
                         <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                         <h3 class="fw-bold mb-3 fs-4">SaaS & MVPs</h3>
@@ -396,14 +824,15 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 fade-up" style="transition-delay: 0.2s;">
+                <div class="col-lg-4 col-md-6 skeuo-reveal delay-1">
                     <div class="bento-card d-flex flex-column">
                         <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                         <h3 class="fw-bold mb-3 fs-4">Web Apps</h3>
                         <p class="text-muted-pro mb-0">Complex, dynamic frontend and robust backend systems built with absolute precision and maintainable architecture.</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 fade-up" style="transition-delay: 0.3s;">
+
+                <div class="col-lg-4 col-md-12 skeuo-reveal delay-2">
                     <div class="bento-card d-flex flex-column">
                         <svg class="pro-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                         <h3 class="fw-bold mb-3 fs-4">Mobile & Web</h3>
@@ -415,39 +844,40 @@
         </div>
     </section>
 
+    <!-- The Engineering Process -->
     <section class="py-5" id="process">
         <div class="container py-4">
-            <div class="text-center mb-5 fade-up">
+            <div class="text-center mb-5 skeuo-reveal">
                 <h2 class="display-4 fw-bold tracking-tight mb-3">The Engineering Process.</h2>
                 <p class="text-muted-pro mx-auto fs-5" style="max-width: 650px;">We don't just write code. We architect solutions. Here is exactly what happens after you initialize a project with our studio.</p>
             </div>
             
             <div class="row g-4">
                 
-                <div class="col-lg-4 fade-up">
+                <div class="col-lg-4 skeuo-reveal">
                     <div class="bento-card d-flex flex-column position-relative h-100">
-                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">01</div>
+                        <div class="skeuo-number">01</div>
                         <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
                         <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Discovery & Scoping</h3>
-                        <p class="text-muted-pro mb-0 position-relative z-1">Mapping the architecture. We define the exact database schemas, user flows, and modern tech stack required to scale your vision properly from day one.</p>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Mapping the architecture. We define the exact database schemas, user flows, and modern tech stack required to scale your vision properly.</p>
                     </div>
                 </div>
 
-                <div class="col-lg-4 fade-up delay-1">
+                <div class="col-lg-4 skeuo-reveal delay-1">
                     <div class="bento-card d-flex flex-column position-relative h-100">
-                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">02</div>
+                        <div class="skeuo-number">02</div>
                         <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Sprint Development</h3>
-                        <p class="text-muted-pro mb-0 position-relative z-1">Writing clean, scalable code. We build your application in structured agile sprints, providing you with transparent, routine progress updates and staging links.</p>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Writing clean, scalable code. We build your application in structured agile sprints, providing transparent, routine progress updates.</p>
                     </div>
                 </div>
 
-                <div class="col-lg-4 fade-up delay-2">
+                <div class="col-lg-4 skeuo-reveal delay-2">
                     <div class="bento-card d-flex flex-column position-relative h-100">
-                        <div class="position-absolute top-0 end-0 p-4 fw-bold" style="font-size: 5rem; line-height: 0.8; letter-spacing: -0.05em; color: rgba(255,255,255,0.03); user-select: none;">03</div>
+                        <div class="skeuo-number">03</div>
                         <svg class="pro-icon position-relative z-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                        <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Deployment & Scaling</h3>
-                        <p class="text-muted-pro mb-0 position-relative z-1">Launching the finalized product. We deploy your software to high-performance cloud servers, fully optimized for enterprise security, speed, and global traffic.</p>
+                        <h3 class="fw-bold mb-3 fs-4 position-relative z-1">Deployment</h3>
+                        <p class="text-muted-pro mb-0 position-relative z-1">Launching the finalized product. We deploy to high-performance cloud servers, optimized for enterprise security, speed, and traffic.</p>
                     </div>
                 </div>
 
@@ -455,9 +885,10 @@
         </div>
     </section>
 
+    <!-- Tech & Business Multiplier -->
     <section class="py-5" id="business-tech">
         <div class="container py-4">
-            <div class="bento-card fade-up">
+            <div class="bento-card skeuo-reveal">
                 <div class="row align-items-center g-4 g-lg-5">
                     <div class="col-lg-5 text-center text-lg-start">
                         <h2 class="display-5 fw-bold tracking-tight mb-3">A Business Multiplier.</h2>
@@ -491,36 +922,9 @@
         </div>
     </section>
 
-    <section class="py-5" id="marketing">
-        <div class="container py-4 text-center fade-up">
-            <h2 class="display-4 fw-bold tracking-tight mb-4">Engineered for Dominance.</h2>
-            <p class="text-muted-pro mx-auto fs-5 mb-5" style="max-width: 700px;">A beautiful app is useless if nobody finds it. We integrate aggressive digital marketing strategies directly into our development lifecycle.</p>
-            
-            <div class="row g-4 text-start">
-                <div class="col-lg-4 col-md-6">
-                    <div class="bento-card p-4 p-md-5">
-                        <h4 class="fw-bold fs-5 mb-2">SEO-First Build</h4>
-                        <p class="text-muted-pro small mb-0">Utilizing Server-Side Rendering (SSR) for maximum Google visibility.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="bento-card p-4 p-md-5">
-                        <h4 class="fw-bold fs-5 mb-2">Conversion UI/UX</h4>
-                        <p class="text-muted-pro small mb-0">Frictionless flows designed using psychology to turn scrollers into clients.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="bento-card p-4 p-md-5">
-                        <h4 class="fw-bold fs-5 mb-2">Data Analytics</h4>
-                        <p class="text-muted-pro small mb-0">Advanced tracking integrated to give visibility over marketing ROI.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- Skeuomorphic Intake Form -->
     <section class="py-5 mb-5" id="intake">
-        <div class="container py-4 fade-up">
+        <div class="container py-4 skeuo-reveal">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="bento-card">
@@ -559,8 +963,11 @@
                             </div>
                         </form>
 
+                        <!-- Success State (Glowing green LED effect) -->
                         <div id="successMessage" class="d-none text-center py-5">
-                            <svg class="mb-4 mx-auto" style="width: 64px; color: #2ecc71;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div style="filter: drop-shadow(0 0 15px var(--led-success));">
+                                <svg class="mb-4 mx-auto" style="width: 64px; color: var(--led-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
                             <h3 class="fw-bold mb-2">Transmission Received</h3>
                             <p class="text-muted-pro mb-0">Our engineering team will initiate contact shortly.</p>
                         </div>
@@ -570,14 +977,63 @@
         </div>
     </section>
 
-    <footer class="py-4 py-md-5 text-center" style="border-top: 1px solid var(--border-subtle);">
-        <p class="text-muted-pro small mb-0 tracking-wide text-uppercase">© 2026 debuglifewithf. All rights reserved.</p>
-    </footer>
+    <!-- Quantum Footer -->
+    <footer class="quantum-footer">
+        <!-- Subtle bottom ambient glow -->
+        <div class="footer-glow"></div>
+        
+        <div class="container position-relative z-1 skeuo-reveal">
+            <div class="row g-5 mb-5">
+                <!-- Manifesto Column -->
+                <div class="col-lg-5">
+                    <h4 class="fw-bold tracking-tight text-white mb-3" style="font-size: 1.5rem;">debuglifewithf.</h4>
+                    <p class="footer-manifesto pe-md-5">
+                        We don't just write code; we engineer leverage. Every system we deploy is a precision instrument designed for infinite scale, flawless execution, and zero friction. Built for the future.
+                    </p>
+                </div>
+                
+                <!-- Services Column -->
+                <div class="col-lg-3 col-md-6 delay-1">
+                    <h5 class="footer-heading text-uppercase">Architecture</h5>
+                    <a href="#services" class="footer-link">SaaS Platforms</a>
+                    <a href="#services" class="footer-link">MVP Development</a>
+                    <a href="#services" class="footer-link">Web Applications</a>
+                    <a href="#services" class="footer-link">Native Mobile</a>
+                    <a href="#services" class="footer-link">System Scaling</a>
+                </div>
 
+                <!-- Operations Column -->
+                <div class="col-lg-4 col-md-6 delay-2">
+                    <h5 class="footer-heading text-uppercase">Command Center</h5>
+                    <p class="footer-manifesto mb-4">
+                        Based in Ahmedabad, India.<br>
+                        Deploying globally.
+                    </p>
+                    <!-- Glowing Operations Indicator -->
+                    <div class="system-status-footer">
+                        <div class="led-pulse led-green"></div>
+                        <span class="system-status-text">All Systems Operational</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright & Legal -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.05);">
+                <p class="text-muted-pro small mb-3 mb-md-0 tracking-wide text-uppercase">© 2026 debuglifewithf. Engineering Studio.</p>
+                <div class="d-flex gap-4">
+                    <a href="#" class="footer-link m-0 small">Privacy</a>
+                    <a href="#" class="footer-link m-0 small">Terms</a>
+                    <a href="#" class="footer-link m-0 small">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Scripts for Dynamic Liveliness -->
     <script>
-        // 1. Dynamic Cursor Glow
+        // 1. Dynamic Interactive Flashlight Cursor
         const cursorGlow = document.getElementById('cursor-glow');
         let isMouseMoving = false;
 
@@ -585,7 +1041,7 @@
             isMouseMoving = true;
             cursorGlow.style.opacity = '1';
             requestAnimationFrame(() => {
-                cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
             });
         });
 
@@ -593,29 +1049,28 @@
             cursorGlow.style.opacity = '0';
         });
 
-        // 2. Hardware-Accelerated Hero Parallax
+        // 2. Hardware-Accelerated Hero Parallax & Navbar Physics
         const heroWrapper = document.querySelector('.hero-parallax-wrapper');
         const navBar = document.getElementById('main-nav');
         
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             
-            // Fade and translate hero text down as you scroll
             if (scrollY < 800) {
-                heroWrapper.style.transform = `translateY(${scrollY * 0.35}px)`;
-                heroWrapper.style.opacity = 1 - (scrollY / 500);
+                heroWrapper.style.transform = `translateY(${scrollY * 0.4}px) scale(${1 - scrollY/4000})`;
+                heroWrapper.style.opacity = 1 - (scrollY / 400);
             }
 
-            // Shrink navbar slightly on scroll for polish
             if (scrollY > 50) {
                 navBar.style.padding = '0.4rem 1rem';
-                navBar.style.background = 'rgba(25, 25, 28, 0.65) !important';
+                navBar.style.boxShadow = '4px 4px 10px rgba(0,0,0,0.8), -2px -2px 5px rgba(255,255,255,0.02)';
             } else {
                 navBar.style.padding = '0.8rem 1rem';
+                navBar.style.boxShadow = '8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light), inset 1px 1px 2px rgba(255,255,255,0.05)';
             }
         });
 
-        // 3. Staggered Scroll Reveal (Intersection Observer)
+        // 3. 3D Hinge Scroll Reveal
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -626,48 +1081,82 @@
                 });
             }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+            document.querySelectorAll('.skeuo-reveal').forEach(el => observer.observe(el));
+            
+            // Trigger Live Typing Terminal Effect
+            startTypingEffect();
         });
 
-        // 4. Smooth Form Submission via Google Apps Script
+        // 4. Live Typing Terminal Logic for Hero Widget
+        function startTypingEffect() {
+            const lines = [
+                "> initializing secure connection...",
+                "> loading architecture modules...",
+                "> bypassing legacy frameworks...",
+                "> debuglifewithf.core [ONLINE]"
+            ];
+            
+            let lineIndex = 0;
+            let charIndex = 0;
+            const container = document.getElementById("typewriter");
+            
+            function typeChar() {
+                if (lineIndex < lines.length) {
+                    if (charIndex < lines[lineIndex].length) {
+                        container.innerHTML += lines[lineIndex].charAt(charIndex);
+                        charIndex++;
+                        // Randomize typing speed for realism
+                        setTimeout(typeChar, Math.random() * 50 + 20);
+                    } else {
+                        container.innerHTML += "<br>";
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(typeChar, 400); // Pause between lines
+                    }
+                }
+            }
+            setTimeout(typeChar, 800); // Initial delay
+        }
+
+        // 5. Smooth Form Submission via Google Apps Script (Functionality preserved)
         document.getElementById('projectForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
             const submitBtn = document.getElementById('submitBtn');
             const successMsg = document.getElementById('successMessage');
             
-            // Connected directly to your Google Script URL
             const googleScriptURL = 'https://script.google.com/macros/s/AKfycbyrVffsH87yyXdnUgJksbtp3bj-gWmdAHVUf_jkL6eftmToYcE50h7dCfw06kgHW2609g/exec';
             
             submitBtn.innerText = "Transmitting...";
             submitBtn.style.opacity = "0.7";
             submitBtn.disabled = true;
+            submitBtn.style.transform = "translateY(2px)";
+            submitBtn.style.boxShadow = "inset 4px 4px 8px rgba(0,0,0,0.1)";
 
             const formData = new FormData(form);
 
             fetch(googleScriptURL, {
                 method: 'POST',
                 body: formData,
-                mode: 'no-cors' // Bypasses Google's strict CORS policy
+                mode: 'no-cors'
             })
             .then(() => {
-                // Trigger the Apple-style success animation
                 form.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
                 form.style.opacity = '0';
-                form.style.transform = 'scale(0.98)';
+                form.style.transform = 'scale(0.95)';
                 
                 setTimeout(() => {
                     form.classList.add('d-none');
                     successMsg.classList.remove('d-none');
                     
                     successMsg.style.opacity = '0';
-                    successMsg.style.transform = 'translateY(20px)';
+                    successMsg.style.transform = 'translateY(20px) scale(0.95)';
                     
-                    void successMsg.offsetWidth; // Reflow
+                    void successMsg.offsetWidth;
                     
-                    successMsg.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    successMsg.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
                     successMsg.style.opacity = '1';
-                    successMsg.style.transform = 'translateY(0)';
+                    successMsg.style.transform = 'translateY(0) scale(1)';
                 }, 400);
             })
             .catch(error => {
@@ -675,6 +1164,8 @@
                 submitBtn.innerText = "Submit Request";
                 submitBtn.style.opacity = "1";
                 submitBtn.disabled = false;
+                submitBtn.style.transform = "";
+                submitBtn.style.boxShadow = "";
                 alert("Transmission failed. Please check your connection.");
             });
         });
