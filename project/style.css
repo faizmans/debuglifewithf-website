@@ -1,24 +1,105 @@
-/* --- Modern Skeuomorphic Variables (Dark Anodized Aluminum) --- */
+/* ==========================================================================
+   DEBUG LIFE WITH F. | CORE STYLESHEET
+   Aesthetic: Deep Space Skeuomorphism / Tech-Noir
+   ========================================================================== */
+
+   /* ==========================================================================
+   MOBILE OPTIMIZATION PATCH (Screens under 768px)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    
+    /* 1. Scale down the 3D iPhone Mockup */
+    .iphone-3d-wrapper {
+        transform: scale(0.85);
+        transform-origin: center top;
+        margin-bottom: -50px; /* Removes empty space left by scaling */
+    }
+
+    /* Disable hover-based 3D tracking on mobile (since there is no mouse) */
+    .iphone-chassis {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    /* Keep the Dynamic Island expanded slightly on mobile so the text is readable */
+    .dynamic-island {
+        width: 220px;
+        height: 50px;
+        border-radius: 25px;
+    }
+    .island-content {
+        opacity: 1;
+        transform: scale(0.9) translateY(0);
+    }
+
+    /* 2. Adjust the Hardware Estimator */
+    .estimator-chassis {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+    .slider-hardware-wrapper {
+        margin-bottom: 2rem !important;
+    }
+
+    /* 3. Typography & Spacing Overrides */
+    h2.display-4 {
+        font-size: 2.5rem; /* Stop massive headers from breaking to 3 lines */
+    }
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    /* 4. Navbar & Overclock Switch */
+    /* Move the overclock switch to fit on a mobile header */
+    .overclock-wrapper {
+        display: flex !important;
+        transform: scale(0.8);
+        margin: 0 !important;
+    }
+    .overclock-label {
+        display: none; /* Hide the text to save space on mobile */
+    }
+}
+
+/* --- Modern Skeuomorphic Variables --- */
 :root {
-    --bg-metal: #1a1c23; 
-    --shadow-dark: #121318;
-    --shadow-light: #22252e;
+    /* Color Palette */
+    --bg-metal: #12141a; 
+    --bg-surface: linear-gradient(145deg, #1c1e25, #14151b);
+    --bg-inset: #0e0f14;
+    
+    /* Physical Shadows */
+    --shadow-dark: #0a0b0e;
+    --shadow-light: #1f222b;
+    --shadow-raised: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light), inset 1px 1px 2px rgba(255,255,255,0.05);
+    --shadow-inset: inset 6px 6px 12px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+    
+    /* Typography */
     --text-primary: #f0f0f5;
     --text-secondary: #8b92a5;
     --text-inset: #5c6275;
+    
+    /* LED Accents */
     --led-blue: #007aff;
     --led-glow: rgba(0, 122, 255, 0.4);
     --led-success: #34c759;
     --led-warning: #ffcc00;
     --led-danger: #ff3b30;
+
+    /* Spacing & Layout */
+    --container-padding: clamp(1.5rem, 5vw, 4rem);
+    --border-radius-lg: clamp(16px, 3vw, 28px);
 }
 
+/* --- Base & Reset --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-metal);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
 /* Physical Brushed Metal Texture */
@@ -28,8 +109,8 @@ body::before {
     top: 0; left: 0; width: 100vw; height: 100vh;
     pointer-events: none;
     z-index: 9998;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     mix-blend-mode: overlay;
 }
 
@@ -38,58 +119,118 @@ body::before {
     position: fixed;
     top: 0; left: 0;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255,255,255,0.035) 0%, transparent 50%);
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
     opacity: 0;
     will-change: transform;
     mix-blend-mode: screen;
 }
 
 /* Typography Enhancements */
-.text-muted-pro { color: var(--text-secondary); line-height: 1.7; }
+.text-muted-pro { color: var(--text-secondary); line-height: 1.8; font-size: clamp(0.95rem, 1.5vw, 1.1rem); }
 .tracking-tight { letter-spacing: -0.04em; }
 
 /* --- Skeuomorphic Floating Navbar --- */
 .navbar-pro {
-    background: linear-gradient(145deg, #1c1e25, #17181e) !important;
+    background: var(--bg-surface) !important;
     border-radius: 999px;
     box-shadow: 
         8px 8px 16px var(--shadow-dark), 
-        -8px -8px 16px var(--shadow-light),
-        inset 1px 1px 2px rgba(255,255,255,0.05);
-    padding: 0.8rem 1rem;
+        -8px -8px 16px rgba(255,255,255,0.02),
+        inset 1px 1px 2px rgba(255,255,255,0.08);
+    padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
     max-width: 1200px; 
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 9999;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.5);
 }
 
 .launch-badge {
-    background: #111216;
+    background: var(--bg-inset);
     color: var(--led-blue);
     padding: 8px 18px;
-    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    font-size: clamp(0.65rem, 1.5vw, 0.85rem);
     white-space: nowrap;
-    box-shadow: 
-        inset 3px 3px 6px var(--shadow-dark), 
-        inset -3px -3px 6px var(--shadow-light);
+    box-shadow: var(--shadow-inset);
     border: 1px solid #000;
-    text-shadow: 0 0 8px var(--led-glow);
+    text-shadow: 0 0 10px var(--led-glow);
+}
+/* --- Elite Brand Lockup --- */
+.brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 14px 6px 6px;
+    background: rgba(10, 11, 14, 0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5), inset -1px -1px 2px rgba(255,255,255,0.02);
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
+.brand-lockup:hover {
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(10, 11, 14, 0.9);
+}
+
+/* The Glowing Terminal Icon */
+.brand-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-surface);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    color: var(--led-success);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.brand-lockup:hover .brand-icon-wrapper {
+    color: var(--text-primary);
+    box-shadow: 0 0 10px var(--led-success);
+}
+
+/* Two-Tone Typography */
+.brand-text {
+    font-size: clamp(1.1rem, 3vw, 1.25rem);
+    display: flex;
+    align-items: baseline;
+}
+
+.brand-accent {
+    color: var(--led-success);
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    margin-left: 2px;
+    font-size: 0.9em;
+}
+
+/* The Hardware Divider */
+.nav-hardware-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 1px 0 0 rgba(0,0,0,0.8);
+}
+
+/* --- Hero Section & Layout --- */
 /* --- Hero Section with Live Widget --- */
 .hero-section {
-    padding-top: 160px; 
-    padding-bottom: 80px;
-    min-height: 95vh;
+    padding-top: clamp(140px, 15vh, 200px); 
+    padding-bottom: clamp(60px, 10vh, 100px);
+    min-height: max(90vh, 600px);
     display: flex;
     align-items: center;
     position: relative;
     z-index: 1;
-    perspective: 1000px; 
+    perspective: 1500px; 
 }
 
 .hero-parallax-wrapper {
@@ -97,16 +238,33 @@ body::before {
     width: 100%;
 }
 
+/* --- THE FIX: Forces Side-by-Side dynamically --- */
+.hero-content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    flex-wrap: nowrap; /* Forces them to stay side-by-side */
+    width: 100%;
+    margin: 0;
+}
+
+/* Ensures text and widget share exactly 50% of the screen and shrink smoothly */
+.hero-content-row > div {
+    flex: 1 1 50%;
+    min-width: 0; /* Prevents overflow */
+}
+
+/* Fluid Hero Typography */
 .hero-headline {
-    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-size: clamp(2.5rem, 5vw, 5rem);
     font-weight: 800;
     letter-spacing: -0.05em;
-    line-height: 1.15;
-    color: #e5e5eb;
+    line-height: 1.1;
+    color: #f5f5f7;
     text-shadow: 
-        2px 2px 4px rgba(0,0,0,0.5),
-        -1px -1px 2px rgba(255,255,255,0.1);
-    white-space: nowrap; 
+        3px 3px 6px rgba(0,0,0,0.6),
+        -1px -1px 2px rgba(255,255,255,0.15);
     margin-bottom: 1.5rem;
 }
 
@@ -117,20 +275,23 @@ body::before {
     max-width: 600px;
 }
 
-/* Live Hardware Widget */
+/* --- Live Hardware Widget --- */
+.hardware-container {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
 .hardware-casing {
-    background: linear-gradient(145deg, #1c1e25, #17181e);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 
-        15px 15px 30px var(--shadow-dark), 
-        -15px -15px 30px var(--shadow-light),
-        inset 1px 1px 2px rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,0,0,0.4);
+    background: var(--bg-surface);
+    border-radius: var(--border-radius-lg);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    box-shadow: var(--shadow-raised);
+    border: 1px solid rgba(0,0,0,0.5);
     position: relative;
     transform: rotateY(-5deg) rotateX(5deg);
     transform-style: preserve-3d;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hardware-casing:hover {
@@ -141,21 +302,19 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: clamp(12px, 2vw, 20px);
     font-family: 'Fira Code', monospace;
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 1.5vw, 0.75rem);
     color: var(--text-inset);
     text-shadow: -1px -1px 1px #000;
 }
 
 .hardware-screen {
-    background: #0d0e12;
+    background: var(--bg-inset);
     border-radius: 12px;
-    padding: 24px;
-    height: 220px;
-    box-shadow: 
-        inset 8px 8px 16px rgba(0,0,0,0.9), 
-        inset -4px -4px 10px rgba(255,255,255,0.03);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    height: clamp(180px, 25vh, 240px);
+    box-shadow: inset 8px 8px 16px rgba(0,0,0,0.9), inset -2px -2px 6px rgba(255,255,255,0.02);
     border: 1px solid #000;
     position: relative;
     overflow: hidden;
@@ -164,12 +323,13 @@ body::before {
     justify-content: space-between;
 }
 
+/* Scanner & Terminal Effects */
 .scanner-line {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 2px;
-    background: rgba(41, 151, 255, 0.6);
-    box-shadow: 0 0 15px rgba(41, 151, 255, 1);
-    animation: scan 3s linear infinite;
+    background: rgba(41, 151, 255, 0.8);
+    box-shadow: 0 0 20px rgba(41, 151, 255, 1);
+    animation: scan 4s linear infinite;
     z-index: 10;
 }
 
@@ -182,15 +342,15 @@ body::before {
 
 .terminal-text {
     font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
+    font-size: clamp(0.75rem, 1.8vw, 0.9rem);
     color: var(--led-success);
-    text-shadow: 0 0 5px rgba(52, 199, 89, 0.4);
+    text-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
     line-height: 1.5;
 }
 
 .terminal-cursor {
     display: inline-block;
-    width: 8px; height: 15px;
+    width: 8px; height: 16px;
     background-color: var(--led-success);
     animation: blink 1s step-end infinite;
     vertical-align: middle;
@@ -198,9 +358,10 @@ body::before {
 
 @keyframes blink { 50% { opacity: 0; } }
 
+/* Hardware Equalizer */
 .eq-visualizer {
     display: flex;
-    gap: 6px;
+    gap: clamp(4px, 1vw, 8px);
     align-items: flex-end;
     height: 40px;
     opacity: 0.8;
@@ -209,12 +370,11 @@ body::before {
 .eq-bar {
     flex: 1;
     background: var(--led-blue);
-    box-shadow: 0 0 8px var(--led-glow);
+    box-shadow: 0 0 10px var(--led-glow);
     border-radius: 2px 2px 0 0;
     transform-origin: bottom;
 }
 
-/* Unique animations for the physical processor bars */
 .eq-bar:nth-child(1) { animation: eqAnim 1.2s infinite alternate ease-in-out; }
 .eq-bar:nth-child(2) { animation: eqAnim 0.8s infinite alternate ease-in-out 0.2s; }
 .eq-bar:nth-child(3) { animation: eqAnim 1.5s infinite alternate ease-in-out 0.4s; }
@@ -222,92 +382,107 @@ body::before {
 .eq-bar:nth-child(5) { animation: eqAnim 0.9s infinite alternate ease-in-out 0.5s; }
 .eq-bar:nth-child(6) { animation: eqAnim 1.4s infinite alternate ease-in-out 0.3s; }
 .eq-bar:nth-child(7) { animation: eqAnim 1.0s infinite alternate ease-in-out 0.6s; }
+.eq-bar:nth-child(8) { animation: eqAnim 1.3s infinite alternate ease-in-out 0.1s; display: none; }
+.eq-bar:nth-child(9) { animation: eqAnim 0.7s infinite alternate ease-in-out 0.4s; display: none; }
+.eq-bar:nth-child(10) { animation: eqAnim 1.6s infinite alternate ease-in-out 0.2s; display: none; }
 
-@keyframes eqAnim {
-    0% { height: 10%; }
-    100% { height: 100%; }
-}
+@media (min-width: 400px) { .eq-bar:nth-child(8), .eq-bar:nth-child(9), .eq-bar:nth-child(10) { display: block; } }
 
-.status-leds {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
+@keyframes eqAnim { 0% { height: 10%; } 100% { height: 100%; } }
 
+/* Hardware LEDs */
+.status-leds { display: flex; gap: 12px; align-items: center; }
 .led-phys {
     width: 10px; height: 10px; border-radius: 50%;
-    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.4);
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.8), inset 2px 2px 4px rgba(255,255,255,0.5);
     border: 1px solid #000;
 }
+.led-blink-green { background: var(--led-success); box-shadow: 0 0 10px var(--led-success); animation: pulseLed 2s infinite; }
+.led-steady-blue { background: var(--led-blue); box-shadow: 0 0 10px var(--led-blue); }
+.led-flicker-red { background: var(--led-danger); box-shadow: 0 0 10px var(--led-danger); animation: flicker 0.5s infinite; }
 
-.led-blink-green { background: var(--led-success); box-shadow: 0 0 8px var(--led-success); animation: pulseLed 2s infinite; }
-.led-steady-blue { background: var(--led-blue); box-shadow: 0 0 8px var(--led-blue); }
-.led-flicker-red { background: var(--led-danger); box-shadow: 0 0 8px var(--led-danger); animation: flicker 0.5s infinite; }
-
-@keyframes pulseLed { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes pulseLed { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
 
-/* --- Physical Tactile Buttons --- */
+/* Responsive Mobile Handling */
+@media (max-width: 991px) {
+    .hero-content-row {
+        flex-wrap: wrap; /* Allows stacking ONLY on mobile/tablet */
+        justify-content: center;
+        text-align: center;
+    }
+    .hero-content-row > div {
+        flex: 1 1 100%; /* Forces them to stack neatly */
+    }
+    .hero-headline-wrapper {
+        text-align: center !important;
+    }
+    .d-flex.justify-content-lg-start {
+        justify-content: center !important;
+    }
+    .hardware-casing {
+        transform: none !important; /* Disables 3D tilt on mobile for better viewing */
+    }
+}
+
+/* --- Tactile Skeuomorphic Buttons --- */
 .btn-pro {
-    background: linear-gradient(145deg, #e6e6e6, #ffffff);
-    color: #000000;
+    background: linear-gradient(145deg, #f5f5f7, #d1d1d6);
+    color: #050507;
     border-radius: 999px;
-    padding: 16px 36px;
+    padding: clamp(12px, 2vw, 16px) clamp(24px, 4vw, 36px);
     font-weight: 700;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
     box-shadow: 
         6px 6px 12px var(--shadow-dark), 
-        -6px -6px 12px var(--shadow-light),
-        inset 2px 2px 4px rgba(255,255,255,0.8);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        -4px -4px 10px rgba(255,255,255,0.05),
+        inset 2px 2px 4px #ffffff;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #d1d1d1;
+    border: 1px solid #b0b0b8;
     white-space: nowrap;
 }
 
 .btn-pro:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: 
-        8px 8px 16px var(--shadow-dark), 
-        -8px -8px 16px var(--shadow-light),
-        inset 2px 2px 4px rgba(255,255,255,0.9);
+        8px 8px 20px var(--shadow-dark), 
+        -6px -6px 16px rgba(255,255,255,0.05),
+        inset 2px 2px 6px #ffffff;
     color: #000;
 }
 
 .btn-pro:active {
     transform: translateY(2px);
-    box-shadow: 
-        2px 2px 4px var(--shadow-dark), 
-        -2px -2px 4px var(--shadow-light),
-        inset 4px 4px 8px rgba(0,0,0,0.1);
+    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.2), inset -2px -2px 4px #ffffff;
 }
 
 .btn-pro-outline {
-    background: linear-gradient(145deg, #1c1e25, #17181e);
+    background: var(--bg-surface);
     color: var(--text-primary);
-    border: 1px solid #000;
+    border: 1px solid rgba(0,0,0,0.8);
+    box-shadow: var(--shadow-raised);
 }
 
 .btn-pro-outline:hover {
     background: var(--bg-metal);
     color: var(--led-blue);
+    border-color: var(--led-blue);
+    box-shadow: 0 0 20px rgba(41, 151, 255, 0.1), var(--shadow-raised);
 }
 
 /* --- Extruded Physical Bento Cards --- */
 .bento-card {
-    background: linear-gradient(145deg, #1c1e25, #17181e);
-    border-radius: 28px;
-    padding: 3rem;
+    background: var(--bg-surface);
+    border-radius: var(--border-radius-lg);
+    padding: var(--container-padding);
     height: 100%;
-    border: 1px solid rgba(0,0,0,0.4);
-    box-shadow: 
-        12px 12px 24px var(--shadow-dark), 
-        -12px -12px 24px var(--shadow-light),
-        inset 1px 1px 2px rgba(255,255,255,0.04);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    border: 1px solid rgba(0,0,0,0.6);
+    box-shadow: var(--shadow-raised);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -317,19 +492,17 @@ body::before {
     transform: translateY(-8px) scale(1.01);
     box-shadow: 
         20px 20px 40px var(--shadow-dark), 
-        -12px -12px 24px var(--shadow-light),
+        -12px -12px 24px rgba(255,255,255,0.02),
         inset 1px 1px 2px rgba(255,255,255,0.06);
 }
 
 .skeuo-number {
     position: absolute;
     top: -10px; right: 10px;
-    font-size: 7rem;
+    font-size: clamp(5rem, 10vw, 8rem);
     font-weight: 800;
     color: transparent;
-    text-shadow: 
-        1px 1px 2px rgba(255,255,255,0.03),
-        -1px -1px 2px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.02), -1px -1px 3px rgba(0,0,0,0.5);
     user-select: none;
     z-index: 0;
 }
@@ -341,66 +514,62 @@ body::before {
     user-select: none;
     mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    padding: 2.5rem 0;
-    background: #15161b;
-    box-shadow: 
-        inset 5px 5px 15px var(--shadow-dark), 
-        inset -5px -5px 15px var(--shadow-light);
-    margin: 3rem 0;
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+    background: var(--bg-inset);
+    box-shadow: var(--shadow-inset);
+    margin: clamp(2rem, 5vw, 4rem) 0;
     border-top: 1px solid #000;
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .marquee-track {
     display: flex;
-    gap: 4rem;
-    animation: marquee-scroll 50s linear infinite;
+    gap: clamp(2rem, 5vw, 4rem);
+    animation: marquee-scroll 45s linear infinite;
 }
 
 .marquee-group {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 4rem;
+    gap: clamp(2rem, 5vw, 4rem);
     min-width: 100%;
     flex-shrink: 0;
 }
 
 .marquee-item {
     font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
     font-weight: 600;
     color: var(--text-inset);
     display: flex;
     align-items: center;
     gap: 0.8rem;
     filter: grayscale(100%) drop-shadow(1px 1px 1px #000);
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: default;
 }
 
-.marquee-item i { font-size: 1.8rem; }
+.marquee-item i { font-size: clamp(1.4rem, 2.5vw, 1.8rem); }
 
 .marquee-item:hover {
     filter: grayscale(0%);
     color: var(--text-primary);
-    transform: scale(1.1) translateY(-2px);
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    transform: scale(1.1) translateY(-3px);
+    text-shadow: 0 0 15px rgba(255,255,255,0.2);
 }
 
 @keyframes marquee-scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-100% - 4rem)); } 
+    100% { transform: translateX(calc(-100% - clamp(2rem, 5vw, 4rem))); } 
 }
 
 /* --- Realistic Mac Terminal --- */
 .mac-window {
-    background: #0a0b0e;
+    background: var(--bg-inset);
     border-radius: 12px;
     border: 1px solid #000;
-    box-shadow: 
-        15px 15px 30px rgba(0,0,0,0.6), 
-        inset 1px 1px 1px rgba(255,255,255,0.05);
+    box-shadow: 15px 15px 30px rgba(0,0,0,0.7), inset 1px 1px 1px rgba(255,255,255,0.05);
     overflow: hidden;
     text-align: left;
 }
@@ -416,240 +585,119 @@ body::before {
 
 .mac-dot {
     width: 12px; height: 12px; border-radius: 50%;
-    box-shadow: inset -1px -2px 4px rgba(0,0,0,0.5), inset 1px 2px 4px rgba(255,255,255,0.4);
-    border: 1px solid rgba(0,0,0,0.5);
+    box-shadow: inset -1px -2px 4px rgba(0,0,0,0.6), inset 1px 2px 4px rgba(255,255,255,0.4);
+    border: 1px solid rgba(0,0,0,0.8);
 }
 .dot-red { background: #ff5f56; }
 .dot-yellow { background: #ffbd2e; }
 .dot-green { background: #27c93f; }
 
 .code-block {
-    padding: 24px;
+    padding: clamp(16px, 3vw, 24px);
     font-family: 'Fira Code', monospace;
     color: #a1a1aa;
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-    line-height: 1.6;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    line-height: 1.7;
     margin: 0;
     overflow-x: auto;
-    box-shadow: inset 10px 10px 20px rgba(0,0,0,0.8);
+    box-shadow: inset 10px 10px 20px rgba(0,0,0,0.9);
 }
 
-.code-kw { color: #569cd6; text-shadow: 0 0 4px rgba(86,156,214,0.4); } 
+.code-kw { color: #569cd6; text-shadow: 0 0 6px rgba(86,156,214,0.3); } 
 .code-func { color: #dcdcaa; } 
 .code-str { color: #ce9178; } 
 .code-comment { color: #6a9955; font-style: italic; }
 
 /* --- Deep Inset Form Inputs --- */
 .pro-input {
-    background: #15161b !important;
+    background: var(--bg-inset) !important;
     border: 1px solid #000 !important;
     color: #ffffff !important;
     border-radius: 12px;
-    padding: 1.2rem 1.2rem;
-    font-size: 16px !important; 
-    box-shadow: 
-        inset 4px 4px 8px var(--shadow-dark), 
-        inset -4px -4px 8px var(--shadow-light) !important;
+    padding: clamp(1rem, 2vw, 1.2rem) !important;
+    font-size: clamp(0.9rem, 1.5vw, 1rem) !important; 
+    box-shadow: var(--shadow-inset) !important;
     transition: all 0.3s ease;
 }
 
 .pro-input:focus {
-    background: #111216 !important;
+    background: #0a0b0e !important;
     border-color: var(--led-blue) !important;
-    box-shadow: 
-        inset 6px 6px 12px rgba(0,0,0,0.8), 
-        0 0 12px var(--led-glow) !important;
+    box-shadow: inset 6px 6px 12px rgba(0,0,0,0.9), 0 0 15px var(--led-glow) !important;
     outline: none;
 }
 
 .form-label {
     color: var(--text-secondary);
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin-bottom: 0.8rem;
-    text-shadow: 1px 1px 1px #000;
+    text-shadow: 1px 1px 2px #000;
 }
 
 /* Icons */
 .pro-icon {
-    width: 56px;
-    height: 56px;
+    width: clamp(44px, 6vw, 64px);
+    height: clamp(44px, 6vw, 64px);
     color: var(--text-primary);
     margin-bottom: 1.5rem;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
+    filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.6));
 }
 
 .small-icon {
-    width: 32px;
-    height: 32px;
+    width: clamp(28px, 4vw, 36px);
+    height: clamp(28px, 4vw, 36px);
     color: var(--led-blue);
-    background: #111216;
+    background: var(--bg-inset);
     padding: 6px;
     border-radius: 8px;
-    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+    box-shadow: var(--shadow-inset);
     border: 1px solid #000;
-}
-
-/* --- 3D Scroll Reveal Animations --- */
-section { perspective: 1500px; }
-
-.skeuo-reveal {
-    opacity: 0;
-    transform: translateY(60px) rotateX(15deg) scale(0.95);
-    transform-origin: bottom center;
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.skeuo-reveal.visible {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg) scale(1);
-}
-
-.delay-1 { transition-delay: 0.15s; }
-.delay-2 { transition-delay: 0.3s; }
-
-/* --- Global Mobile Responsiveness --- */
-@media (max-width: 991px) {
-    .hero-section {
-        padding-top: 140px;
-        padding-bottom: 60px;
-        min-height: auto;
-    }
-    .hero-headline {
-        font-size: 3rem;
-    }
-    .hardware-casing {
-        transform: none; /* Disable 3D tilt on mobile */
-        margin-top: 2rem;
-    }
-    .bento-card {
-        padding: 2rem 1.5rem;
-        border-radius: 20px;
-        box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
-    }
-    .btn-pro { width: 100%; }
-    .d-flex.gap-3.flex-wrap { flex-direction: column; gap: 16px !important; }
-    #cursor-glow { display: none; }
-    .display-4 { font-size: 2.2rem; }
-    .display-5 { font-size: 2rem; }
-    .pro-icon { width: 44px; height: 44px; margin-bottom: 1.2rem; }
-    section { padding-top: 2rem !important; padding-bottom: 2rem !important; }
-    .marquee-wrapper { padding: 1.5rem 0; margin: 1rem 0;}
-    .marquee-item { font-size: 1rem; }
-    .marquee-item i { font-size: 1.5rem; }
-    
-    .skeuo-reveal { transform: translateY(40px) scale(0.98); }
-    .skeuo-reveal.visible { transform: translateY(0) scale(1); }
-}
-
-/* --- Quantum Footer --- */
-.quantum-footer {
-    background: #050608; 
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding: 5rem 0 2rem 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.footer-glow {
-    position: absolute;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 80%; height: 150px;
-    background: radial-gradient(ellipse at bottom, rgba(41, 151, 255, 0.08), transparent 70%);
-    pointer-events: none;
-}
-
-.footer-heading {
-    color: var(--text-primary);
-    font-family: 'Fira Code', monospace;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
-}
-
-.footer-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    display: block;
-    margin-bottom: 0.8rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.footer-link:hover {
-    color: var(--led-blue);
-    transform: translateX(4px);
-}
-
-.footer-manifesto {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.8;
 }
 
 /* --- Skeuomorphic Estimator --- */
 .estimator-container {
-    background: linear-gradient(145deg, #1c1e25, #17181e);
-    padding: 3rem;
-    border-radius: 28px;
-    border: 1px solid rgba(0,0,0,0.4);
-    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+    background: var(--bg-surface);
+    padding: var(--container-padding);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(0,0,0,0.5);
+    box-shadow: var(--shadow-raised);
     text-align: center;
 }
 
 .slider-track {
     -webkit-appearance: none;
     width: 100%;
-    height: 12px;
-    background: #111216;
-    border-radius: 6px;
-    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.8);
+    height: 14px;
+    background: var(--bg-inset);
+    border-radius: 7px;
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.9);
     outline: none;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
+    border: 1px solid #000;
 }
 
 .slider-track::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 28px; height: 28px;
-    background: #e6e6e6;
+    width: 32px; height: 32px;
+    background: linear-gradient(145deg, #f5f5f7, #d1d1d6);
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 4px 4px 8px var(--shadow-dark), inset 1px 1px 2px #fff;
-    transition: all 0.2s;
+    box-shadow: 4px 4px 8px var(--shadow-dark), inset 2px 2px 4px #fff;
+    border: 1px solid #888;
+    transition: box-shadow 0.2s;
 }
 
-.slider-track::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 15px var(--led-blue);
+.slider-track::-webkit-slider-thumb:hover, .slider-track::-webkit-slider-thumb:active {
+    box-shadow: 0 0 20px var(--led-blue), inset 2px 2px 4px #fff;
 }
 
 .price-display {
     font-family: 'Fira Code', monospace;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
     color: var(--led-blue);
     margin: 1rem 0;
-}
-
-.system-status-footer {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: #0a0b10;
-    padding: 12px 18px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.05);
-    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-    font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-/* Pulsing Text Glow */
-.system-status-text {
-    color: var(--led-success);
-    font-weight: 600;
-    animation: pulseText 2s infinite;
+    text-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
 }
 
 /* --- Live System Console --- */
@@ -657,38 +705,1018 @@ section { perspective: 1500px; }
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #111216;
-    padding: 6px 14px;
+    background: var(--bg-inset);
+    padding: 8px 16px;
     border-radius: 99px;
-    border: 1px solid rgba(255,255,255,0.05);
-    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+    border: 1px solid #000;
+    box-shadow: var(--shadow-inset);
     font-family: 'Fira Code', monospace;
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
     color: var(--text-secondary);
 }
 
 .ping-val { color: var(--led-success); }
-
 .heartbeat-led {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--led-success);
-    box-shadow: 0 0 6px var(--led-success);
-    animation: pulse-fast 1s infinite;
+    box-shadow: 0 0 8px var(--led-success);
+    animation: pulse-fast 1.5s infinite;
 }
 
-@keyframes pulse-fast {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
+@keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ==========================================================================
+   QUANTUM FOOTER UPGRADES
+   ========================================================================== */
+
+.quantum-footer {
+    background: #050507;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    box-shadow: inset 0 20px 40px rgba(0,0,0,0.5);
 }
 
-@keyframes pulseText {
-    0%, 100% { 
-        text-shadow: 0 0 4px rgba(52, 199, 89, 0.4); 
-        opacity: 0.85; 
+/* Faint Blueprint Grid Background */
+.footer-grid-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.footer-heading {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    font-family: 'Fira Code', monospace;
+}
+
+/* Hacker-Style Link Hovers */
+.footer-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.footer-link::before {
+    content: '> ';
+    color: var(--led-success);
+    font-family: 'Fira Code', monospace;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-right: 4px;
+}
+
+.footer-link:hover {
+    color: var(--text-primary);
+    transform: translateX(4px);
+}
+
+.footer-link:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Mini Links (Privacy, Terms) */
+.footer-link-small {
+    color: var(--text-inset);
+    text-decoration: none;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.2s ease;
+}
+.footer-link-small:hover { color: var(--text-primary); }
+
+/* The Terminal Command Center Box */
+.terminal-box {
+    background: #0a0b0e;
+    border-radius: 8px;
+    border: 1px solid #1c1e25;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8), inset -1px -1px 2px rgba(255,255,255,0.03);
+    overflow: hidden;
+}
+
+.terminal-header {
+    background: #15161a;
+    padding: 6px 12px;
+    border-bottom: 1px solid #1c1e25;
+    display: flex;
+    align-items: center;
+}
+
+.mac-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.terminal-body {
+    padding: 16px;
+    color: var(--text-secondary);
+}
+
+/* --- 3D Scroll Reveal Animations --- */
+section { perspective: 1500px; }
+.skeuo-reveal {
+    opacity: 0;
+    transform: translateY(60px) rotateX(10deg) scale(0.95);
+    transform-origin: bottom center;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.skeuo-reveal.visible { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); }
+.delay-1 { transition-delay: 0.15s; }
+.delay-2 { transition-delay: 0.3s; }
+
+/* --- Responsive Overrides --- */
+@media (max-width: 991px) {
+    .hero-headline-wrapper { text-align: center; }
+    .hardware-casing { transform: none !important; margin-top: 1rem; }
+}
+
+@media (max-width: 768px) {
+    .hero-content-row { gap: 20px; }
+    .btn-pro { width: 100%; }
+    .d-flex.gap-3.flex-wrap { flex-direction: column; gap: 12px !important; }
+    #cursor-glow { display: none; } /* Better performance on touch screens */
+    .skeuo-reveal { transform: translateY(40px) scale(0.98); } /* Softer 3D effect on mobile */
+    .system-console { display: none !important; } /* Hide latency ping on small screens */
+}
+
+/* --- Pure CSS Skeuomorphic iPhone Showcase --- */
+
+/* The Titanium Outer Body */
+.iphone-chassis {
+    position: relative;
+    width: 320px;
+    height: 650px;
+    background: #000;
+    border-radius: 48px;
+    border: 4px solid #3f414a; 
+    box-shadow: 
+        0 0 0 2px #1c1e25, 
+        20px 20px 40px var(--shadow-dark), 
+        -10px -10px 20px var(--shadow-light),
+        inset 0 0 6px #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    z-index: 10;
+    
+    /* 3D Physics Engine */
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg));
+    transition: transform 0.1s ease-out; /* Fast snap while moving */
+}
+.iphone-chassis.leave-physics {
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.iphone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-metal);
+    border-radius: 38px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Pushes the screen 'up' so it floats off the back casing in 3D */
+    transform: translateZ(20px); 
+}
+
+/* Dynamic Glass Glare */
+.screen-glare {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Glare tracks the exact X/Y of the mouse */
+    background: radial-gradient(
+        600px circle at var(--glare-x, 50%) var(--glare-y, -20%), 
+        rgba(255,255,255,0.15) 0%, 
+        transparent 60%
+    );
+    pointer-events: none;
+    z-index: 50;
+    transition: background 0.1s ease-out;
+}
+.iphone-chassis.leave-physics .screen-glare {
+    transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hardware Buttons */
+.hardware-btn { position: absolute; background: #3f414a; border-radius: 4px; }
+.mute-btn { width: 4px; height: 26px; left: -8px; top: 110px; }
+.vol-up-btn { width: 4px; height: 50px; left: -8px; top: 160px; }
+.vol-down-btn { width: 4px; height: 50px; left: -8px; top: 220px; }
+.power-btn { width: 4px; height: 80px; right: -8px; top: 180px; }
+
+/* The Glass Screen */
+.iphone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-metal);
+    border-radius: 38px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Glass Glare Overlay */
+.screen-glare {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* --- Optimized Dynamic Island & iOS UI --- */
+.dynamic-island {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 28px; background: #000; border-radius: 20px;
+    z-index: 100; box-shadow: inset 0 0 2px rgba(255,255,255,0.2);
+    transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.dynamic-island:hover {
+    width: 260px; height: 60px; border-radius: 30px; top: 16px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 2px rgba(255,255,255,0.2);
+}
+
+.island-content {
+    display: flex; align-items: center; gap: 16px; white-space: nowrap;
+    opacity: 0; transform: scale(0.8) translateY(4px);
+    transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.dynamic-island:hover .island-content {
+    opacity: 1; transform: scale(1) translateY(0); transition-delay: 0.15s;
+}
+
+.island-text {
+    font-family: 'Fira Code', monospace; font-size: 0.8rem;
+    color: var(--text-secondary); letter-spacing: -0.02em;
+}
+
+.island-waveform { display: flex; align-items: center; gap: 3px; height: 16px; }
+.wave-bar {
+    width: 3px; background: var(--led-success); border-radius: 2px;
+    animation: island-wave 1.2s ease-in-out infinite alternate;
+}
+.wave-bar:nth-child(1) { height: 40%; } /* Default delay is 0 */
+.wave-bar:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+.wave-bar:nth-child(3) { height: 60%; animation-delay: 0.5s; }
+.wave-bar:nth-child(4) { height: 80%; animation-delay: 0.2s; }
+
+@keyframes island-wave {
+    0% { transform: scaleY(0.3); opacity: 0.5; }
+    100% { transform: scaleY(1); opacity: 1; box-shadow: 0 0 8px var(--led-success); }
+}
+
+.ios-status-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 44px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 24px; font-size: 11px; font-weight: 700; color: #fff;
+    z-index: 90; font-family: system-ui, -apple-system, sans-serif;
+}
+.ios-home-indicator {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 5px; background: rgba(255,255,255,0.8);
+    border-radius: 100px; z-index: 100;
+}
+/* Horizontal Scroll Track INSIDE the phone */
+.iphone-scroll-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    height: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    background: var(--bg-surface);
+}
+
+.iphone-scroll-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* Individual App/Project Slide */
+.app-slide {
+    flex: 0 0 100%; /* Each slide takes exactly 100% of the phone screen */
+    height: 100%;
+    scroll-snap-align: center;
+    padding: 80px 24px 60px 24px; /* Space for Notch and Home Bar */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.4s ease;
+}
+
+/* Inactive slides slightly fade out */
+.app-slide:not(.active-slide) {
+    opacity: 0.3; 
+}
+
+/* App UI Elements */
+.app-icon-wrapper {
+    width: 90px; height: 90px;
+    background: #0a0b0e;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.8), inset -2px -2px 4px rgba(255,255,255,0.05);
+}
+
+.project-category {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    color: var(--led-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+.project-title {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.project-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.project-tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.project-tag {
+    background: var(--bg-inset);
+    color: var(--text-inset);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.6);
+}
+
+/* Desktop Scroll Buttons */
+.scroll-btn {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-raised);
+    transition: all 0.2s ease;
+}
+
+.scroll-btn:hover {
+    color: var(--led-blue);
+    border-color: var(--led-blue);
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   ELITE UPGRADES: Preloader, Command-K, and Card Spotlights
+   ========================================================================== */
+
+/* --- 1. System Boot Preloader --- */
+#system-bootup {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #050507; z-index: 100000;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.boot-terminal {
+    width: 90%; max-width: 600px;
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    color: var(--led-success); text-shadow: 0 0 8px var(--led-glow);
+}
+
+/* --- 2. Interactive Spotlight on Bento Cards --- */
+.bento-card {
+    position: relative; /* Ensure card is positioned for the pseudo-element */
+}
+.bento-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
+    padding: 2px; /* Border thickness */
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+        rgba(255, 255, 255, 0.15),
+        transparent 40%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.bento-card:hover::before { opacity: 1; }
+
+/* Subtle inner glow matching mouse */
+.bento-card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(
+        800px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+        rgba(255, 255, 255, 0.03),
+        transparent 40%
+    );
+    z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
+}
+.bento-card:hover::after { opacity: 1; }
+/* Ensure text stays above the glow */
+.bento-card > * { position: relative; z-index: 1; }
+
+/* --- 3. Command-K Power Menu --- */
+.btn-cmd-k {
+    background: var(--bg-inset); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary); border-radius: 8px; padding: 6px 12px;
+    font-size: 0.85rem; display: flex; align-items: center; cursor: pointer;
+    box-shadow: var(--shadow-inset); transition: all 0.2s ease;
+}
+.btn-cmd-k:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.3); }
+.cmd-badge {
+    background: rgba(255,255,255,0.1); color: var(--text-primary);
+    padding: 2px 6px; border-radius: 4px; font-family: 'Inter', sans-serif;
+    font-size: 0.7rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.05);
+}
+
+#cmd-k-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 100001; display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 15vh; transition: opacity 0.3s ease, visibility 0.3s;
+}
+#cmd-k-modal.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.cmd-k-backdrop {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.cmd-k-palette {
+    position: relative; width: 100%; max-width: 600px; background: rgba(20, 21, 27, 0.85);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: scale(1); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#cmd-k-modal.hidden .cmd-k-palette { transform: scale(0.95) translateY(-20px); }
+
+.cmd-k-search {
+    display: flex; align-items: center; padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.cmd-k-search input {
+    background: transparent; border: none; color: #fff; width: 100%;
+    font-size: 1.1rem; padding: 0 16px; outline: none; font-family: 'Inter', sans-serif;
+}
+.cmd-k-search input::placeholder { color: var(--text-secondary); }
+
+.cmd-k-results { padding: 12px; max-height: 400px; overflow-y: auto; }
+.cmd-k-group {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-inset); padding: 8px 12px; font-weight: 700;
+}
+.cmd-k-item {
+    display: flex; align-items: center; padding: 12px;
+    color: var(--text-primary); text-decoration: none; border-radius: 8px;
+    transition: background 0.2s; font-weight: 500; font-size: 0.95rem;
+}
+.cmd-k-item:hover, .cmd-k-item.selected {
+    background: rgba(255,255,255,0.05); color: var(--led-blue); text-decoration: none;
+}
+.cmd-k-icon { margin-right: 12px; font-size: 1.2rem; }
+
+/* --- Security Shield Console --- */
+.security-shield-wrapper {
+    background: linear-gradient(145deg, #1c1e25, #121318);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 999px; /* Gives it that sleek Apple-style pill shape */
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1050px;
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.6),
+        inset 2px 2px 4px rgba(255,255,255,0.03),
+        inset -2px -2px 6px rgba(0,0,0,0.8);
+    position: relative;
+    z-index: 10;
+}
+
+/* System Status Indicator */
+.shield-status {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--text-inset);
+    letter-spacing: 0.1em;
+    align-items: center;
+}
+
+/* Etched Physical Divider */
+.shield-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255,255,255,0.05);
+    box-shadow: 1px 0 0 rgba(0,0,0,0.6);
+    margin: 0 2rem;
+}
+
+.shield-badges {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+/* Interactive Badge Items */
+.shield-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
+}
+
+.shield-item:hover {
+    background: rgba(255,255,255,0.03);
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4), inset -1px -1px 2px rgba(255,255,255,0.02);
+    transform: translateY(-1px);
+}
+
+.icon-glow-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--led-success);
+    /* Creates an illuminated diode effect on the SVG */
+    filter: drop-shadow(0 0 6px rgba(52, 199, 89, 0.4));
+    transition: filter 0.3s ease;
+}
+
+.shield-item:hover .icon-glow-wrapper {
+    filter: drop-shadow(0 0 12px rgba(52, 199, 89, 0.8));
+}
+
+.shield-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    transition: color 0.3s ease;
+}
+
+.shield-item:hover .shield-text {
+    color: var(--text-primary);
+}
+
+/* Mobile Adjustments (Stacks neatly into an inset box) */
+@media (max-width: 991px) {
+    .security-shield-wrapper {
+        flex-direction: column;
+        border-radius: 24px;
+        padding: 24px;
+        gap: 1.5rem;
     }
-    50% { 
-        text-shadow: 0 0 12px rgba(52, 199, 89, 0.9); 
-        opacity: 1; 
+    .shield-badges {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        width: 100%;
+    }
+    .shield-item {
+        width: 100%;
+        justify-content: flex-start;
+        background: rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.02);
+        box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
     }
 }
+
+/* --- Custom Text Selection (The "Hacker" Highlight) --- */
+::selection {
+    background-color: var(--led-success);
+    color: #000000;
+    text-shadow: none; /* Removes text-shadow for crisp reading */
+}
+
+::-moz-selection {
+    background-color: var(--led-success);
+    color: #000000;
+    text-shadow: none;
+}
+
+/* Optional: Make links glow slightly when highlighted */
+a::selection {
+    background-color: var(--text-primary);
+    color: var(--bg-metal);
+}
+
+/* --- Optimized Power Surge Glitch --- */
+#glitch-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 999999;
+    display: none; /* Hidden by default */
+}
+
+/* When the class is added to the HTML tag, show the overlay and animate it */
+.power-surge-active #glitch-overlay {
+    display: block;
+    animation: crt-flash 0.35s steps(3, end) both;
+}
+
+/* We violently invert the colors, boost contrast, and flash RGB backgrounds */
+@keyframes crt-flash {
+    0% { 
+        background: rgba(255, 0, 0, 0.15); 
+        backdrop-filter: invert(0.2) contrast(1.5) translateX(-8px);
+    }
+    33% { 
+        background: rgba(0, 255, 255, 0.15); 
+        backdrop-filter: invert(0.8) contrast(2) translateX(8px);
+    }
+    66% { 
+        background: rgba(0, 255, 0, 0.1); 
+        backdrop-filter: invert(0.1) contrast(1.2) translateY(-4px);
+    }
+    100% { 
+        background: transparent; 
+        backdrop-filter: none;
+    }
+}
+
+/* ==========================================================================
+   GOD-TIER OVERCLOCK MODE
+   ========================================================================== */
+
+/* --- The Physical Toggle Switch --- */
+.overclock-wrapper {
+    font-family: 'Fira Code', monospace; font-size: 0.65rem;
+    color: var(--text-inset); letter-spacing: 0.1em; font-weight: 700;
+}
+.switch-phys { position: relative; display: inline-block; width: 44px; height: 24px; }
+.switch-phys input { opacity: 0; width: 0; height: 0; }
+.slider-phys {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background: #0a0b0e; border-radius: 34px; border: 1px solid #000;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.8), inset -1px -1px 2px rgba(255,255,255,0.05);
+    transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slider-phys:before {
+    position: absolute; content: ""; height: 16px; width: 16px;
+    left: 3px; bottom: 3px; background: linear-gradient(145deg, #f5f5f7, #d1d1d6);
+    border-radius: 50%; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5), inset 1px 1px 2px #fff;
+}
+
+/* Switch ON State */
+input:checked + .slider-phys {
+    background: #1a0505; border-color: #3a0000;
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.9), 0 0 8px rgba(255, 59, 48, 0.4);
+}
+input:checked + .slider-phys:before {
+    transform: translateX(20px); background: #ff3b30;
+    box-shadow: 0 0 10px #ff3b30, inset 1px 1px 2px rgba(255,255,255,0.5);
+}
+
+/* --- THE GLOBAL CSS VARIABLE HIJACK --- */
+/* When active, every green/blue LED on the site instantly turns Blazing Red */
+body.overclocked {
+    --led-success: #ff3b30; 
+    --led-blue: #ff453a;    
+    --led-glow: rgba(255, 59, 48, 0.5);
+    --bg-surface: linear-gradient(145deg, #1f0a0a, #120505);
+    /* Pulse the background slightly */
+    animation: core-meltdown 4s infinite alternate;
+}
+
+@keyframes core-meltdown {
+    0% { background-color: #12141a; }
+    100% { background-color: #1a0505; }
+}
+
+/* --- Intense CRT Scanlines --- */
+.overclock-scanline {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 4px, 3px 100%;
+    z-index: 99998; /* Just below the glitch overlay */
+    pointer-events: none; opacity: 0; transition: opacity 0.5s ease;
+}
+body.overclocked .overclock-scanline { opacity: 1; }
+
+/* --- 300% Animation Speed Injections --- */
+body.overclocked .marquee-track { animation-duration: 15s !important; } /* Normal: 45s */
+body.overclocked .scanner-line { animation-duration: 1s !important; }   /* Normal: 3s */
+body.overclocked .wave-bar { animation-duration: 0.3s !important; }     /* Hardware Equalizer */
+body.overclocked .heartbeat-led { animation-duration: 0.4s !important; box-shadow: 0 0 15px #ff3b30;} /* Latency Monitor */
+
+
+/* --- Hardware Estimator Console --- */
+.estimator-chassis {
+    max-width: 650px;
+    background: linear-gradient(145deg, #18191f, #0d0e12);
+    border-radius: 24px;
+    padding: clamp(2rem, 5vw, 3rem);
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 
+        0 30px 60px rgba(0,0,0,0.8),
+        inset 1px 1px 2px rgba(255,255,255,0.05),
+        inset -1px -1px 4px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* The Inset Track */
+.slider-hardware-wrapper {
+    position: relative;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.slider-notches {
+    position: absolute;
+    top: -25px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px; /* Aligns with thumb center */
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    color: var(--text-inset);
+    font-weight: 700;
+    pointer-events: none;
+}
+
+/* The actual HTML Range Input (Made invisible but clickable) */
+.hardware-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    background: #050506;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8), inset 0 -1px 1px rgba(255,255,255,0.05);
+    position: relative;
+    z-index: 5;
+    cursor: grab;
+}
+
+.hardware-slider:active { cursor: grabbing; }
+
+/* The Glowing Fill Line */
+.slider-fill {
+    position: absolute;
+    top: 50%; left: 0;
+    transform: translateY(-50%);
+    height: 6px;
+    background: var(--led-success);
+    border-radius: 10px;
+    z-index: 4;
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--led-glow), inset 0 1px 2px rgba(255,255,255,0.5);
+    transition: width 0.1s ease-out; /* Smooth tracking */
+    margin-left: 2px; /* Slight padding from edge */
+}
+
+/* The Physical Knob (Webkit) */
+.hardware-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 44px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #3f414a, #2a2c33);
+    border: 1px solid #111;
+    box-shadow: 
+        -4px 0 10px rgba(0,0,0,0.6),
+        4px 0 10px rgba(0,0,0,0.6),
+        inset 0 1px 1px rgba(255,255,255,0.2),
+        inset 0 -2px 2px rgba(0,0,0,0.4);
+    cursor: pointer;
+    position: relative;
+    /* Adds a glowing grip line to the thumb */
+    background-image: linear-gradient(90deg, transparent 40%, var(--led-success) 45%, var(--led-success) 55%, transparent 60%);
+}
+
+/* The Physical Knob (Firefox) */
+.hardware-slider::-moz-range-thumb {
+    width: 28px; height: 44px; border-radius: 6px;
+    background: linear-gradient(180deg, #3f414a, #2a2c33);
+    border: 1px solid #111;
+    box-shadow: -4px 0 10px rgba(0,0,0,0.6), 4px 0 10px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2), inset 0 -2px 2px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+
+/* The Digital Readout Screen */
+.readout-screen {
+    background: #0a0b0e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #000;
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.8), inset -2px -2px 4px rgba(255,255,255,0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.readout-glass-glare {
+    position: absolute; top: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.price-display {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--led-success);
+    text-shadow: 0 0 8px var(--led-glow);
+}
+
+/* --- 3D Quantum Core Background --- */
+#quantum-core-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* Keeps it behind your text and UI */
+    pointer-events: none; /* Allows the user to click right through it */
+    overflow: hidden;
+}
+
+/* Make sure your hero content sits above the 3D canvas */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+.hero-content-wrapper {
+    position: relative;
+    z-index: 2; /* Sits on top of the canvas */
+}
+
+
+/* ==========================================================================
+   OS-LEVEL HEADER ENHANCEMENTS
+   ========================================================================== */
+
+/* --- The Dynamic Header Container --- */
+/* Base state (at the very top of the page) */
+#dynamic-header {
+    width: 100%;
+}
+#dynamic-header .navbar-pro {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Scrolled state (triggered by JS) */
+#dynamic-header.header-scrolled {
+    padding-top: 0.5rem !important; /* Shrinks to save screen space */
+}
+#dynamic-header.header-scrolled .navbar-pro {
+    background: rgba(10, 11, 14, 0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* --- Scroll Telemetry Line --- */
+.scroll-progress-track {
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: -1;
+}
+.scroll-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--led-success);
+    box-shadow: 0 0 10px var(--led-glow);
+    transition: width 0.1s ease-out; /* Smooth snapping */
+}
+/* Overclock hook for the progress bar */
+body.overclocked .scroll-progress-fill { background: #ff3b30; box-shadow: 0 0 15px rgba(255,59,48,0.8); }
+
+/* --- Center Magnetic Navigation --- */
+.absolute-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.core-nav-links {
+    position: relative;
+    background: rgba(0,0,0,0.4);
+    border-radius: 100px;
+    padding: 4px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.core-link {
+    position: relative;
+    padding: 6px 16px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.core-link:hover {
+    color: var(--text-primary);
+}
+
+/* The physical pill that slides behind hovered links */
+.hover-pill {
+    position: absolute;
+    top: 4px; left: 4px;
+    height: calc(100% - 8px);
+    width: 0;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    z-index: 1;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+/* --- Upgraded Pulse Badge --- */
+.pulse-badge {
+    background: rgba(52, 199, 89, 0.1) !important;
+    border: 1px solid rgba(52, 199, 89, 0.3);
+    color: var(--led-success);
+}
+.live-dot {
+    width: 6px; height: 6px;
+    background: var(--led-success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--led-success);
+    animation: live-pulse 2s infinite;
+}
+@keyframes live-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 1; }
+}
+/* Overclock hook for the badge */
+body.overclocked .pulse-badge { background: rgba(255,59,48,0.1) !important; border-color: rgba(255,59,48,0.3); color: #ff3b30; }
+body.overclocked .live-dot { background: #ff3b30; box-shadow: 0 0 8px #ff3b30; animation-duration: 0.5s; }
