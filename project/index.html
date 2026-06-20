@@ -73,6 +73,16 @@
     <div id="cursor-glow" aria-hidden="true"></div>
 
     <header class="fixed-top pt-3 px-3 px-md-4" style="z-index: 1030;">
+        <div class="system-broadcast-wrapper skeuo-reveal">
+        <a href="#intake" class="broadcast-pill">
+            <div class="broadcast-led"></div>
+            <span class="broadcast-text">
+                <span class="text-white fw-bold me-2">Launching:</span> 
+                V1.0 Deploying Soon. Secure your priority architecture slot.
+            </span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="broadcast-arrow"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+    </div>
         <nav class="navbar navbar-pro mx-auto" id="main-nav" aria-label="Main Navigation">
             <div class="container-fluid d-flex justify-content-between align-items-center px-2 px-md-3">
                 
@@ -105,13 +115,7 @@
                     </label>
                 </div>
                 
-                <span class="badge rounded-pill fw-semibold launch-badge d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    Launching Soon
-                </span>
+            
             </div>
         </nav>
     </header>
@@ -120,11 +124,14 @@
     <main>
         <div id="quantum-core-canvas"></div>
         <!-- High-End Skeuomorphic Hero Section -->
+         
         <section class="hero-section" aria-label="Hero Overview">
             <div class="container hero-parallax-wrapper skeuo-reveal visible">
                 <div class="row align-items-center hero-content-row">
+
                     
                     <div class="col-lg-6">
+                        
                         <div class="hero-headline-wrapper text-center text-lg-start">
                             <h1 class="hero-headline mb-4">Pro engineering.<br>Uncompromised.</h1>
                             <p class="hero-subheadline mb-5">
@@ -260,7 +267,7 @@
             </div>
         </section>
 <!-- Proof of Work / Single iPhone Interactive Showcase -->
-        <section class="py-5 overflow-hidden" id="work" aria-label="Selected Projects">
+        <section class="py-5" id="work" aria-label="Selected Projects">
             <div class="container py-5">
                 <div class="row align-items-center justify-content-between g-5">
                     
@@ -313,9 +320,8 @@
                                 <!-- The Scrollable Project Track Inside the Phone -->
                                 <div class="iphone-scroll-track" id="projectGallery">
                                     
-                                    <!-- Project 1: Vanguard -->
                                     <div class="app-slide">
-                                        <div class="app-icon-wrapper shadow-dark">
+                                        <div class="app-icon-wrapper shadow-dark mb-3">
                                             <i class="devicon-python-plain"></i>
                                         </div>
                                         <div class="project-category">Enterprise SaaS</div>
@@ -327,13 +333,12 @@
                                         </div>
                                     </div>
 
-                                    <!-- Project 2: Orangers -->
                                     <div class="app-slide">
-                                        <div class="app-icon-wrapper shadow-dark">
+                                        <div class="app-icon-wrapper shadow-dark mb-3">
                                             <i class="devicon-react-original"></i>
                                         </div>
                                         <div class="project-category">E-Commerce</div>
-                                        <h3 class="project-title">Orangers Apparels</h3>
+                                        <h3 class="project-title">Kids Clothing</h3>
                                         <p class="project-desc">A high-conversion clothing web platform. Designed with an ultra-responsive frontend to ensure frictionless user flows to checkout.</p>
                                         <div class="project-tags">
                                             <span class="project-tag">Web App</span>
@@ -341,13 +346,12 @@
                                         </div>
                                     </div>
 
-                                    <!-- Project 3: Zam Zam Tours -->
                                     <div class="app-slide">
-                                        <div class="app-icon-wrapper shadow-dark">
+                                        <div class="app-icon-wrapper shadow-dark mb-3">
                                             <i class="devicon-nextjs-plain"></i>
                                         </div>
                                         <div class="project-category">Digital Platform</div>
-                                        <h3 class="project-title">Zam Zam Travels</h3>
+                                        <h3 class="project-title">Tours And Travels</h3>
                                         <p class="project-desc">A bespoke digital presence engineered to optimize organic reach and streamline customer booking inquiries through a reliable interface.</p>
                                         <div class="project-tags">
                                             <span class="project-tag">Next.js</span>
@@ -355,13 +359,12 @@
                                         </div>
                                     </div>
 
-                                    <!-- Project 4: Sameer Trading -->
                                     <div class="app-slide">
-                                        <div class="app-icon-wrapper shadow-dark">
+                                        <div class="app-icon-wrapper shadow-dark mb-3">
                                             <i class="devicon-postgresql-plain"></i>
                                         </div>
                                         <div class="project-category">B2B Commerce</div>
-                                        <h3 class="project-title">Sameer Trading Co.</h3>
+                                        <h3 class="project-title">Trading Company</h3>
                                         <p class="project-desc">A robust raw materials portal for the bakery industry. Architected to handle complex B2B inventory logic and bulk corporate orders.</p>
                                         <div class="project-tags">
                                             <span class="project-tag">Logistics</span>
@@ -710,6 +713,7 @@
     <script src="script.js"></script>
     <div id="glitch-overlay"></div>
     <div class="overclock-scanline"></div>
+
     
 </body>
 </html>

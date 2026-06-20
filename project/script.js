@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             heroWrapper.style.opacity = 1 - (scrollY / 400);
         }
 
-        // Navbar Physics "Click-in"
         if (navBar) {
             if (scrollY > 50) {
                 navBar.style.padding = '0.4rem 1rem';
@@ -52,12 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ---------------------------------------------------------
-    // 3. 3D Hinge Scroll Reveal
-    // ---------------------------------------------------------
-    // ---------------------------------------------------------
-    // 3. 3D Hinge Scroll Reveal & Matrix Decrypt Effect
-    // ---------------------------------------------------------
     const observerOptions = {
         threshold: 0.1, 
         rootMargin: "0px 0px -50px 0px"
@@ -73,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const hackerChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>";
         let iterations = 0;
 
-        // Clear any existing intervals so it doesn't glitch infinitely
         clearInterval(element.decryptInterval);
 
         element.decryptInterval = setInterval(() => {
@@ -732,3 +724,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+// ---------------------------------------------------------
+    // 18. Cinematic Cinema Mode
+    // ---------------------------------------------------------
+    
+    // Inject the physical overlay into the DOM safely
+    if (!document.getElementById('focus-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'focus-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    const projectCards = document.querySelectorAll('.app-slide');
+
+    if (projectCards.length > 0) {
+        projectCards.forEach(card => {
+            // Mouse Enters: Trigger Global Darkness & Center Phone
+            card.addEventListener('mouseenter', () => {
+                document.body.classList.add('focus-active');
+                card.classList.add('focus-target');
+            });
+
+            // Mouse Leaves: Turn Lights On & Return Phone
+            card.addEventListener('mouseleave', () => {
+                document.body.classList.remove('focus-active');
+                card.classList.remove('focus-target');
+            });
+        });
+    }

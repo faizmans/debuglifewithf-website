@@ -1720,3 +1720,186 @@ body.overclocked .scroll-progress-fill { background: #ff3b30; box-shadow: 0 0 15
 /* Overclock hook for the badge */
 body.overclocked .pulse-badge { background: rgba(255,59,48,0.1) !important; border-color: rgba(255,59,48,0.3); color: #ff3b30; }
 body.overclocked .live-dot { background: #ff3b30; box-shadow: 0 0 8px #ff3b30; animation-duration: 0.5s; }
+
+/* ==========================================================================
+   SYSTEM BROADCAST BANNER
+   ========================================================================== */
+.system-broadcast-wrapper {
+    position: fixed;
+    top: 115px; /* INCREASED: Creates a massive, clean air-gap below the header */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1020;
+    pointer-events: none;
+}
+
+.broadcast-pill {
+    pointer-events: auto; /* Makes the pill itself clickable */
+    background: rgba(10, 11, 14, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 16px 8px 12px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(0);
+}
+
+.broadcast-pill:hover {
+    background: rgba(20, 22, 28, 0.85);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(52, 199, 89, 0.15);
+}
+
+.broadcast-led {
+    width: 6px;
+    height: 6px;
+    background: var(--led-success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--led-success);
+    animation: pulse-led 2s infinite alternate;
+}
+/* --- Header Glass Ledge Separation --- */
+header.fixed-top {
+    background: rgba(5, 5, 7, 0.85); /* Deep dark background */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* The physical ledge line */
+    padding-bottom: 1rem; /* Gives the navbar breathing room inside the glass */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Drops a shadow onto the page */
+}
+.broadcast-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+}
+
+.broadcast-arrow {
+    color: var(--text-inset);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.broadcast-pill:hover .broadcast-arrow {
+    transform: translateX(4px);
+    color: var(--led-success);
+}
+
+@media (max-width: 768px) {
+    .broadcast-pill {
+        max-width: 90vw;
+        padding: 6px 12px;
+    }
+    .broadcast-text { font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* ==========================================================================
+   3D HUD UPGRADE & HOLOGRAPHIC SCANNER
+   ========================================================================== */
+/* Add 3D perspective to the existing HUD */
+.deployment-hud {
+    overflow: hidden; /* Contains the scanner laser */
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    /* Base floating animation */
+    animation: float-hud 6s ease-in-out infinite;
+}
+
+@keyframes float-hud {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+/* Aggressive 3D tilt on hover */
+.deployment-hud:hover {
+    transform: translateY(-4px) rotateX(15deg) rotateY(-10deg) scale(1.05);
+    box-shadow: 
+        -10px 20px 30px rgba(0, 0, 0, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* The Holographic Scanner Laser */
+.hud-scanner {
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 120%;
+    height: 20%;
+    background: linear-gradient(to bottom, transparent, rgba(52, 199, 89, 0.2), var(--led-success));
+    opacity: 0.5;
+    pointer-events: none;
+    transform: translateY(-100%) rotate(-5deg);
+    animation: holographic-scan 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    z-index: 5;
+    mix-blend-mode: screen;
+}
+
+@keyframes holographic-scan {
+    0% { transform: translateY(-100%) rotate(-5deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(600%) rotate(-5deg); opacity: 0; }
+}
+
+/* Overclock Integration for Banner & Scanner */
+body.overclocked .broadcast-led { background: #ff3b30; box-shadow: 0 0 8px #ff3b30; }
+body.overclocked .broadcast-pill:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255, 59, 48, 0.2); }
+body.overclocked .broadcast-pill:hover .broadcast-arrow { color: #ff3b30; }
+body.overclocked .hud-scanner { background: linear-gradient(to bottom, transparent, rgba(255, 59, 48, 0.2), #ff3b30); animation-duration: 1s; }
+
+/* ==========================================================================
+   STABLE CINEMATIC FOCUS 
+   ========================================================================== */
+
+/* 1. Set baseline transitions so the blur applies smoothly */
+header, footer, section, .system-broadcast-wrapper, .deployment-hud {
+    transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+/* 2. Global Dimming Engine using CSS :has() */
+/* When the user's mouse is over the #work section, blur everything else */
+body:has(#work:hover) header,
+body:has(#work:hover) footer,
+body:has(#work:hover) section:not(#work),
+body:has(#work:hover) .system-broadcast-wrapper,
+body:has(#work:hover) .deployment-hud {
+    opacity: 0.15;
+    filter: blur(8px);
+    pointer-events: none; /* Stops them from clicking blurred elements */
+}
+
+/* 3. Ensure the #work section itself stays razor sharp */
+#work {
+    position: relative;
+    z-index: 10;
+}
+
+/* 4. Sibling Card Dimming (Inside the iPhone) */
+.app-slide {
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+/* When the user hovers anywhere inside the scroll track, dim ALL cards... */
+.iphone-scroll-track:hover .app-slide {
+    opacity: 0.2;
+    filter: blur(3px);
+    transform: scale(0.95);
+}
+
+/* ...EXCEPT the specific card the mouse is currently over */
+.iphone-scroll-track:hover .app-slide:hover {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.05);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
