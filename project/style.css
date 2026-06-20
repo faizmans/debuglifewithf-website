@@ -17,9 +17,12 @@
 
     /* Disable hover-based 3D tracking on mobile (since there is no mouse) */
     .iphone-chassis {
-        transform: none !important;
-        transition: none !important;
-    }
+    /* Critical to prevent Safari/mobile blurring during motion */
+    transform-style: preserve-3d; 
+    
+    /* Pre-calculates the transform for the GPU */
+    will-change: transform; 
+}
     
     /* Keep the Dynamic Island expanded slightly on mobile so the text is readable */
     .dynamic-island {
@@ -1030,8 +1033,16 @@ section { perspective: 1500px; }
 }
 
 /* Inactive slides slightly fade out */
-.app-slide:not(.active-slide) {
-    opacity: 0.3; 
+.app-slide {
+    /* Tell the browser specifically which properties to optimize for change */
+    will-change: transform, opacity;
+    
+    /* Force GPU composition for 100% stable hardware acceleration */
+    transform: translateZ(0); 
+    
+    /* Prevent potential "flickering" or blurring in Safari */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* App UI Elements */
